@@ -1,5 +1,23 @@
-const getPosts = (req,res)=>{
-    res.send("This is get Route for /post")
+import Post from '../models/post';
+
+const getPosts = async(req,res)=>{
+    try {
+        const posts = await Post.find({});
+        res.status(200).json({data:posts})
+    } catch (error) {
+        res.status(500).json({message:error})
+    }
 }
 
-module.exports = {getPosts}
+const createPost = async(req,res) => {
+    try {
+        const {title,message,creator,tags,selectedFile,likeCount,createdAt} = req.body;
+        const post = new Post({title,message,creator,tags,selectedFile,likeCount,createdAt})
+        await post.save();
+        res.status(201).json({data:post})
+    } catch (error) {
+        res.status(500).json({message:error})
+    }
+}
+
+module.exports = {getPosts,createPost}

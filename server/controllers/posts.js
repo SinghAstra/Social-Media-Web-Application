@@ -1,4 +1,4 @@
-import Post from '../models/post';
+const Post = require('../models/post')
 
 const getPosts = async(req,res)=>{
     try {
@@ -11,8 +11,8 @@ const getPosts = async(req,res)=>{
 
 const createPost = async(req,res) => {
     try {
-        const {title,message,creator,tags,selectedFile,likeCount,createdAt} = req.body;
-        const post = new Post({title,message,creator,tags,selectedFile,likeCount,createdAt})
+        const {title,message,creator,tags,selectedFile} = req.body;
+        const post = new Post({title,message,creator,tags,selectedFile})
         await post.save();
         res.status(201).json({data:post})
     } catch (error) {

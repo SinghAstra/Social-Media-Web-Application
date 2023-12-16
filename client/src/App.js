@@ -13,7 +13,7 @@ function App() {
         <div className="bg-purple-500 w-full h-screen lg:w-4/6">
           <Posts/>
         </div>
-        <div className="bg-cyan-500 w-full  h-screen lg:w-2/6">
+        <div className="bg-cyan-500 w-full h-screen lg:w-2/6 flex justify-center pt-3">
           <Form/>
         </div>
       </div>

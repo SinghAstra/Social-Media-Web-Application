@@ -14,8 +14,7 @@ export default function Posts() {
     dispatch(fetchAllPost())
   },[dispatch])
   return (
-    <div>
-      Posts
+    <div className="flex justify-center flex-wrap items-center">
       {posts&&posts.map(post=><Post post={post}/>)}
     </div>
   );

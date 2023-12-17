@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { createPost, fetchAllPost } from "../../actions/post";
 import FileBase64 from "react-file-base64";
 
-export default function Form() {
+export default function Form({currentId,setCurrentId}) {
   const [formData, setFormData] = useState({
     title: "",
     message: "",
@@ -12,7 +12,7 @@ export default function Form() {
     selectedFile: "",
   });
   const dispatch = useDispatch();
-
+  const posts = useSelector(state =>state.post);
   const clearFormData = () => {
     setFormData({
       title: "",
@@ -22,19 +22,20 @@ export default function Form() {
       selectedFile: "",
     });
   };
-
+  console.log("formData is ",formData);
   const handleFormSubmit = (e) => {
     e.preventDefault();
     dispatch(createPost(formData));
-    setFormData({
-      "title":"",
-      "message":"",
-      "creator":"",
-      "tags":[],
-      "selectedFile":""
-    })
-    dispatch(fetchAllPost())
+    clearFormData();
   };
+  useEffect(()=>{
+    if(currentId){
+      const currentPost = posts.find(post => post._id === currentId)
+      setFormData(currentPost);
+      console.log("currentPost is ",currentPost);
+    }
+  },[currentId,posts])
+
   return (
     <div>
       <div className="w-full max-w-xs">
@@ -42,6 +43,9 @@ export default function Form() {
           className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
           onSubmit={handleFormSubmit}
         >
+          <div className="mb-4">
+            <h1 className="text-center">{currentId?'Edit':'Create'} a Memory</h1>
+          </div>
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"

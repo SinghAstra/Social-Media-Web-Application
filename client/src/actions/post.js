@@ -1,5 +1,5 @@
 import axios from 'axios'
-const { CREATE_POST, FETCH_ALL_POST, UPDATE_POST } = require('./actionTypes')
+const { CREATE_POST, FETCH_ALL_POST, UPDATE_POST, DELETE_POST } = require('./actionTypes')
 
 export const createPost = ({title,message,creator,tags,selectedFile}) =>{
     return async function (dispatch){
@@ -26,7 +26,6 @@ export const fetchAllPost = () => {
 export const updatePost = (updatedFormData) => {
     return async function(dispatch){
         try {
-            console.log("updatedFormData is ",updatedFormData)
             const {data} = await axios.put(`http://localhost:5000/post/${updatedFormData._id}`,updatedFormData);
             dispatch({type:UPDATE_POST,payload:data.data})
         } catch (error) {
@@ -34,4 +33,16 @@ export const updatePost = (updatedFormData) => {
         }
     }
 }
+export const deletePost = (id) => {
+    return async function(dispatch){
+        try {
+            await axios.delete(`http://localhost:5000/post/${id}`);
+            dispatch({type:DELETE_POST,payload:id})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+
 

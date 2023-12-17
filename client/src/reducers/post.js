@@ -1,4 +1,4 @@
-import { CREATE_POST, FETCH_ALL_POST, UPDATE_POST } from "../actions/actionTypes";
+import { CREATE_POST, DELETE_POST, FETCH_ALL_POST, UPDATE_POST } from "../actions/actionTypes";
 
 export const postReducer = (state = [],action) => {
     switch(action.type){
@@ -11,6 +11,8 @@ export const postReducer = (state = [],action) => {
             return state.map(post =>
                     post._id === action.payload._id ? action.payload : post
             )
+        case DELETE_POST:
+            return state.filter(post => post._id !== action.payload);
         default:
             return state
     }

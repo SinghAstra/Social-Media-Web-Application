@@ -1,6 +1,6 @@
 import Posts from "./components/Posts/Posts";
 import Form from "./components/Form/Form";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 
 function App() {

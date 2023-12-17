@@ -1,5 +1,5 @@
 import axios from 'axios'
-const { CREATE_POST, FETCH_ALL_POST, UPDATE_POST, DELETE_POST } = require('./actionTypes')
+const { CREATE_POST, FETCH_ALL_POST, UPDATE_POST, DELETE_POST, LIKE_POST } = require('./actionTypes')
 
 export const createPost = ({title,message,creator,tags,selectedFile}) =>{
     return async function (dispatch){
@@ -38,6 +38,16 @@ export const deletePost = (id) => {
         try {
             await axios.delete(`http://localhost:5000/post/${id}`);
             dispatch({type:DELETE_POST,payload:id})
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+export const likePost = (id) => {
+    return async function(dispatch){
+        try {
+            const {data} = await axios.put(`http://localhost:5000/post/${id}/likePost`);
+            dispatch({type:LIKE_POST,payload:data.data})
         } catch (error) {
             console.log(error)
         }

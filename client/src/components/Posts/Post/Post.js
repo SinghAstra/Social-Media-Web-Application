@@ -3,13 +3,16 @@ import moment from "moment";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditNoteIcon from '@mui/icons-material/EditNote';
-import { deletePost } from "../../../actions/post";
+import { deletePost, likePost } from "../../../actions/post";
 import { useDispatch } from "react-redux";
 
 export default function Post({ post,setCurrentId }) {
   const dispatch = useDispatch();
   const handleDeletePost = (id) => {
     dispatch(deletePost(id));
+  }
+  const handleLikePost = (id)=>{
+    dispatch(likePost(id))
   }
   return (
     <div className="max-w-xs rounded overflow-hidden shadow-lg m-2">
@@ -21,7 +24,7 @@ export default function Post({ post,setCurrentId }) {
         <p className="text-gray-700 text-base">{post.message}</p>
         <div className="flex justify-between items-center p-1">
           <div className="flex flex-col justify-center items-center p-1.5 m-1 bg-yellow-500 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 text-white">
-            <ThumbUpOutlinedIcon />
+            <button onClick={()=>handleLikePost(post._id)}><ThumbUpOutlinedIcon /></button>
             <p>{post.likeCount}</p>
           </div>
           <div className="flex justify-center items-center">

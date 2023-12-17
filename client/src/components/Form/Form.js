@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, fetchAllPost } from "../../actions/post";
+import { createPost, updatePost,  } from "../../actions/post";
 import FileBase64 from "react-file-base64";
 
 export default function Form({currentId,setCurrentId}) {
@@ -12,7 +12,7 @@ export default function Form({currentId,setCurrentId}) {
     selectedFile: "",
   });
   const dispatch = useDispatch();
-  const posts = useSelector(state =>state.post);
+  const posts = useSelector(state =>state.posts);
   const clearFormData = () => {
     setFormData({
       title: "",
@@ -22,17 +22,21 @@ export default function Form({currentId,setCurrentId}) {
       selectedFile: "",
     });
   };
-  console.log("formData is ",formData);
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    dispatch(createPost(formData));
+    if(currentId){
+      dispatch(updatePost(formData))
+      setCurrentId(null)
+    }else{
+      dispatch(createPost(formData));
+    }
     clearFormData();
   };
+
   useEffect(()=>{
     if(currentId){
       const currentPost = posts.find(post => post._id === currentId)
       setFormData(currentPost);
-      console.log("currentPost is ",currentPost);
     }
   },[currentId,posts])
 

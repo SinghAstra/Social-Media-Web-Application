@@ -6,7 +6,7 @@ import { fetchAllPost } from "../../actions/post";
 
 export default function Posts({setCurrentId}) {
   const posts = useSelector(state=>{
-    return state.post
+    return state.posts
   })
 
   const dispatch = useDispatch()

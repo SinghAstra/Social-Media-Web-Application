@@ -15,11 +15,13 @@ export default function Post({ post,setCurrentId }) {
     dispatch(likePost(id))
   }
   return (
-    <div className="max-w-xs rounded overflow-hidden shadow-lg m-2">
-      <img className="w-full" src={post.selectedFile} alt="post" />
+    <div className="max-w-xs rounded-md overflow-hidden shadow-lg m-2 relative border-2 border-white">
+      <img className="w-full opacity-80" src={post.selectedFile} alt="post" />
+      <div className="absolute top-2 left-3 text-white">
+        <div className="text-base font-bold">{post.creator}</div>
+        <div className="text-xs font-semibold">{moment(post.createdAt).fromNow()}</div>
+      </div>
       <div className="px-6 py-4">
-        <div className="text-xs ">{post.creator}</div>
-        <div className="text-xs mb-1">{moment(post.createdAt).fromNow()}</div>
         <div className="font-bold text-lg mb-2">{post.title}</div>
         <p className="text-gray-700 text-base">{post.message}</p>
         <div className="flex justify-between items-center p-1">

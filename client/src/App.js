@@ -13,10 +13,10 @@ function App() {
   return (
     <div className="">
       {/* lg:bg-gray-800  sm:bg-green-500 md:bg-orange-500 xl:bg-red-500 */}
-      <nav className="flex p-4">
+      <nav className="flex p-4 ">
         <h2 className="text-2xl tracking-wide font-medium text-white">Social Media Application</h2>
       </nav>
-      <div className=" flex flex-col lg:flex-row">
+      <div className=" flex flex-col-reverse lg:flex-row">
         <div className=" w-full  lg:w-4/6">
           <Posts setCurrentId={setCurrentId}/>
         </div>

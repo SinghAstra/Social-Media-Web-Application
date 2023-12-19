@@ -1,8 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const user = null;
+  const location = useLocation()
+  const [user,setUser] = useState(JSON.parse(localStorage.getItem('user')));
+  useEffect(()=>{
+    setUser(JSON.parse(localStorage.getItem('user')))
+  },[location])
   return (
     <div>
       {/* lg:bg-gray-800  sm:bg-green-500 md:bg-orange-500 xl:bg-red-500 */}

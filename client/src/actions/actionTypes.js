@@ -5,3 +5,5 @@ export const DELETE_POST = "DELETE_POST";
 export const LIKE_POST = "LIKE_POST";
 export const AUTH = "AUTH";
 export const LOG_OUT = "LOG_OUT";
+export const SIGN_IN = "SIGN_IN";
+export const SIGN_UP = "SIGN_UP";

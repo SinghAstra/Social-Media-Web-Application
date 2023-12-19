@@ -5,7 +5,7 @@ import {
   useGoogleOneTapLogin,
 } from "@react-oauth/google";
 import {useNavigate} from 'react-router-dom';
-import { logInUser } from "../../actions/auth";
+import { logInUser, signInUser, signUpUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 
 const Auth = () => {
@@ -27,9 +27,11 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isSignUp) {
+    if (isSignUp) { 
+      signInUser(formData,navigate);
       console.log("formData is ", formData);
     } else {
+      signUpUser(formData,navigate)
       console.log("formData is ", {
         email: formData.email,
         password: formData.password,
@@ -127,8 +129,7 @@ const Auth = () => {
             <div className="w-full flex justify-center">
             <GoogleLogin
               onSuccess={(response)=>{
-                dispatch(logInUser(response.credential));
-                navigate('/');
+                dispatch(logInUser(response.credential,navigate));
               }}
               onError={() => {
                 console.log("Login Failed");

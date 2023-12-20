@@ -53,10 +53,10 @@ const likePost = async (req, res) => {
     const post = await Post.findById(id);
 
     const hasLiked = post.likes.includes(req.userId);
+    console.log("hasLiked is ", hasLiked);
 
     if (hasLiked) {
-      post.likes = post.likes.filter((id) => id !== String(req.userId));
-      console.log("post.likes is ", post.likes);
+      post.likes = post.likes.filter((id) => String(id) !== req.userId);
     } else {
       post.likes.push(req.userId);
     }

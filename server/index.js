@@ -1,30 +1,34 @@
-const bodyParser = require('body-parser');
-const express = require('express');
+const bodyParser = require("body-parser");
+const express = require("express");
 const app = express();
-const postRoutes = require('./routes/posts')
-const cors = require('cors');
-const { default: mongoose } = require('mongoose');
-require('dotenv').config();
+const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/user");
+const cors = require("cors");
+const { default: mongoose } = require("mongoose");
+require("dotenv").config();
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 
-mongoose.connect(CONNECTION_URL).then(()=>{
+mongoose
+  .connect(CONNECTION_URL)
+  .then(() => {
     console.log("Connected to the Database Successfully");
-}).catch(err=>{
+  })
+  .catch((err) => {
     console.log(err.message);
-})
+  });
 
-app.use(bodyParser.urlencoded({limit:'30mb',extended:true}))
-app.use(bodyParser.json({limit:'30mb',extended:true}))
+app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
+app.use(bodyParser.json({ limit: "30mb", extended: true }));
 app.use(cors());
 
-app.use('/post',postRoutes)
+app.use("/post", postRoutes);
+app.use("/user", userRoutes);
 
-app.get('/',(req,res)=>{
-    res.send("This is Home Route.")
-})
+app.get("/", (req, res) => {
+  res.send("This is Home Route.");
+});
 
-app.listen(5000,()=>{
-    console.log("Server is Listening on Port 3000");
-})
-
+app.listen(5000, () => {
+  console.log("Server is Listening on Port 3000");
+});

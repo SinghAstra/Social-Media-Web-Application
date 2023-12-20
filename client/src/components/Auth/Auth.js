@@ -1,10 +1,6 @@
 import React, { useState } from "react";
-import {
-  GoogleLogin,
-  useGoogleLogin,
-  useGoogleOneTapLogin,
-} from "@react-oauth/google";
-import {useNavigate} from 'react-router-dom';
+import { GoogleLogin } from "@react-oauth/google";
+import { useNavigate } from "react-router-dom";
 import { logInUser, signInUser, signUpUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 
@@ -27,15 +23,14 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isSignUp) { 
-      signInUser(formData,navigate);
-      console.log("formData is ", formData);
+    if (isSignUp) {
+      if (formData.password === formData.confirmPassword) {
+        dispatch(signUpUser(formData, navigate));
+      } else {
+        setFormData({ ...formData, confirmPassword: "" });
+      }
     } else {
-      signUpUser(formData,navigate)
-      console.log("formData is ", {
-        email: formData.email,
-        password: formData.password,
-      });
+      dispatch(signInUser(formData, navigate));
     }
   };
 
@@ -127,16 +122,16 @@ const Auth = () => {
               </button>
             </form>
             <div className="w-full flex justify-center">
-            <GoogleLogin
-              onSuccess={(response)=>{
-                dispatch(logInUser(response.credential,navigate));
-              }}
-              onError={() => {
-                console.log("Login Failed");
-              }}
-              useOneTap
+              <GoogleLogin
+                onSuccess={(response) => {
+                  dispatch(logInUser(response.credential, navigate));
+                }}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+                useOneTap
               />
-              </div>
+            </div>
             ;
             <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-end">
               <button

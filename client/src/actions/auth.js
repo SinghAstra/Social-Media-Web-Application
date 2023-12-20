@@ -19,6 +19,7 @@ export const signInUser = (formData, navigate) => {
   return async function (dispatch) {
     try {
       const { data } = await signInApi(formData);
+      data.result = { ...data.result, token: data.token };
       dispatch({ type: AUTH, payload: data.result });
       navigate("/");
     } catch (error) {
@@ -31,7 +32,7 @@ export const signUpUser = (formData, navigate) => {
   return async function (dispatch) {
     try {
       const { data } = await signUpApi(formData);
-      console.log("data in signUpUser is ", data);
+      data.result = { ...data.result, token: data.token };
       dispatch({ type: AUTH, payload: data.result });
       navigate("/");
     } catch (error) {

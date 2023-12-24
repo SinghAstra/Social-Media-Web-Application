@@ -112,10 +112,20 @@ const likePost = async (req, res) => {
 const deletePost = async (req, res) => {
   try {
     const { id } = req.params;
+
+    const post = await Post.findById(id);
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Post Not Found." });
     }
+
+    if (!req.userId || String(post.creator) !== req.userId) {
+      console.log("Unauthenticated delete Request");
+      return res.status(400).json({ message: "UnAuthenticated" });
+    }
+
     await Post.findByIdAndDelete(id);
+
     res.status(201).json({ data: "Deleted Successfully." });
   } catch (error) {
     res.status(500).json({ message: error });

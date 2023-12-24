@@ -14,7 +14,6 @@ export default function Form({ currentId, setCurrentId }) {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
 
-  console.log("user in Form.js is ", user);
   const clearFormData = () => {
     setFormData({
       title: "",
@@ -29,7 +28,6 @@ export default function Form({ currentId, setCurrentId }) {
       dispatch(updatePost({ ...formData, name: user?.name }));
       setCurrentId(null);
     } else {
-      console.log("user in Form.js is ", user);
       dispatch(createPost({ ...formData, name: user?.name }));
     }
     clearFormData();

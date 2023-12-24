@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { logOutUser } from "../../actions/auth";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const location = useLocation();
@@ -9,6 +10,13 @@ const Navbar = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const token = user?.token;
+    if (token) {
+      const decodedToken = jwtDecode(token);
+      if (decodedToken.exp * 1000 < new Date().getTime()) {
+        dispatch(logOutUser(setUser));
+      }
+    }
     setUser(JSON.parse(localStorage.getItem("user")));
   }, [location]);
   return (

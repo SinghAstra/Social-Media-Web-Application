@@ -1,44 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createPost, updatePost,  } from "../../actions/post";
+import { createPost, updatePost } from "../../actions/post";
 import FileBase64 from "react-file-base64";
 
-export default function Form({currentId,setCurrentId}) {
+export default function Form({ currentId, setCurrentId }) {
+  const user = useSelector((state) => state.auth.authState);
   const [formData, setFormData] = useState({
     title: "",
     message: "",
-    creator: "",
     tags: [],
     selectedFile: "",
   });
   const dispatch = useDispatch();
-  const posts = useSelector(state =>state.posts);
+  const posts = useSelector((state) => state.posts);
+
+  console.log("user in Form.js is ", user);
   const clearFormData = () => {
     setFormData({
       title: "",
       message: "",
-      creator: "",
       tags: [],
       selectedFile: "",
     });
   };
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    if(currentId){
-      dispatch(updatePost(formData))
-      setCurrentId(null)
-    }else{
-      dispatch(createPost(formData));
+    if (currentId) {
+      dispatch(updatePost({ ...formData, name: user?.name }));
+      setCurrentId(null);
+    } else {
+      console.log("user in Form.js is ", user);
+      dispatch(createPost({ ...formData, name: user?.name }));
     }
     clearFormData();
   };
 
-  useEffect(()=>{
-    if(currentId){
-      const currentPost = posts.find(post => post._id === currentId)
+  useEffect(() => {
+    if (currentId) {
+      const currentPost = posts.find((post) => post._id === currentId);
       setFormData(currentPost);
     }
-  },[currentId,posts])
+  }, [currentId, posts]);
+
+  if (!user) {
+    return (
+      <div className="w-full max-w-xs bg-white shadow-md rounded px-8 py-6 h-fit">
+        <h1>
+          Please Sign In in order to create your post and like other posts.
+        </h1>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -48,28 +60,9 @@ export default function Form({currentId,setCurrentId}) {
           onSubmit={handleFormSubmit}
         >
           <div className="mb-4">
-            <h1 className="text-center">{currentId?'Edit':'Create'} a Memory</h1>
-          </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-bold mb-2"
-              htmlFor="creator"
-            >
-              Creator
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="creator"
-              type="text"
-              placeholder="Creator"
-              value={formData.creator}
-              onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  creator: e.target.value,
-                });
-              }}
-            />
+            <h1 className="text-center">
+              {currentId ? "Edit" : "Create"} a Memory
+            </h1>
           </div>
           <div className="mb-4">
             <label
@@ -125,11 +118,11 @@ export default function Form({currentId,setCurrentId}) {
               id="tags"
               type="text"
               placeholder="Tags"
-              value={formData.tags.join(' ')}
+              value={formData.tags.join(" ")}
               onChange={(e) => {
                 setFormData({
                   ...formData,
-                  tags: e.target.value.split(' '),
+                  tags: e.target.value.split(" "),
                 });
               }}
             />

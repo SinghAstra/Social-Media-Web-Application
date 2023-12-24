@@ -1,6 +1,6 @@
 import { AUTH, LOG_OUT } from "../actions/actionTypes";
 const initialState = {
-  authState: null,
+  authState: JSON.parse(localStorage.getItem("user")),
 };
 export const authReducer = (state = initialState, action) => {
   switch (action.type) {

@@ -2,24 +2,18 @@ import axios from "axios";
 const API_URL = "http://localhost:5000/";
 // const API_URL = "https://tourtrackr.onrender.com/";
 
-const API = axios.create({ baseURL: "http://localhost:5000" });
+const API = axios.create({ baseURL: API_URL });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("user")) {
     const token = JSON.parse(localStorage.getItem("user")).token;
-    console.log("token is ", token);
+    req.headers.Authorization = `Bearer ${token}`;
   }
-  // req.headers.Authorization = `Beaerer `
   return req;
 });
 
-export const createPostApi = ({
-  title,
-  message,
-  creator,
-  tags,
-  selectedFile,
-}) => API.post(`/post`, { title, message, creator, tags, selectedFile });
+export const createPostApi = ({ title, message, name, tags, selectedFile }) =>
+  API.post(`/post`, { title, message, name, tags, selectedFile });
 
 export const getAllPostApi = () => API.get(`/post`);
 

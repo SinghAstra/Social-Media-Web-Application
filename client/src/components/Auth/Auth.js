@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { GoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router-dom";
-import { logInUser, signInUser, signUpUser } from "../../actions/auth";
+import { signInUser, signUpUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 
 const Auth = () => {
@@ -121,28 +120,14 @@ const Auth = () => {
                 {isSignUp ? "Sign Up" : "Sign In"}
               </button>
             </form>
-            <div className="w-full flex justify-center">
-              <GoogleLogin
-                onSuccess={(response) => {
-                  dispatch(logInUser(response.credential, navigate));
-                }}
-                onError={() => {
-                  console.log("Login Failed");
-                }}
-                useOneTap
-              />
-            </div>
-            ;
-            <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-end">
-              <button
-                onClick={toggleSignUp}
-                className="font-medium text-primary-600 hover:underline dark:text-primary-500"
-              >
-                {isSignUp
-                  ? ` Already have an account? Sign In`
-                  : `Create a new account? Sign Up`}
-              </button>
-            </p>
+            <button
+              onClick={toggleSignUp}
+              className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+            >
+              {isSignUp
+                ? ` Already have an account? Sign In`
+                : `Create a new account? Sign Up`}
+            </button>
           </div>
         </div>
       </div>

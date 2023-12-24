@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const getPosts = async (req, res) => {
   try {
     const posts = await Post.find({}).sort({ createdAt: -1 });
+
     res.status(200).json({ data: posts });
   } catch (error) {
     res.status(500).json({ message: error });
@@ -12,9 +13,28 @@ const getPosts = async (req, res) => {
 
 const createPost = async (req, res) => {
   try {
-    const { title, message, creator, tags, selectedFile } = req.body;
-    const post = new Post({ title, message, creator, tags, selectedFile });
+    console.log("req.userId is ", req.userId);
+
+    if (!req.userId) {
+      return res.status(400).json({ message: "UnAuthenticated" });
+    }
+
+    const { title, message, tags, selectedFile, name } = req.body;
+
+    console.log("name is ", name);
+    console.log("req.userId is ", req.userId);
+
+    const post = new Post({
+      title,
+      message,
+      creator: req.userId,
+      tags,
+      name,
+      selectedFile,
+    });
+
     await post.save();
+
     res.status(201).json({ data: post });
   } catch (error) {
     res.status(500).json({ message: error });
@@ -24,20 +44,41 @@ const createPost = async (req, res) => {
 const updatePost = async (req, res) => {
   try {
     const { id } = req.params;
+
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({ message: "Post Not Found." });
     }
-    const { title, message, creator, tags, selectedFile } = req.body;
+
+    const post = await Post.findById(id);
+
+    console.log("post.creator is ", post.creator);
+    console.log("req.userId is ", req.userId);
+
+    if (!req.userId || String(post.creator) !== req.userId) {
+      console.log("Unauthenticated updatePost");
+      return res.status(400).json({ message: "UnAuthenticated" });
+    }
+
+    const { title, message, name, tags, selectedFile } = req.body;
+
+    console.log("name is ", name);
+
     const updatedPost = await Post.findByIdAndUpdate(
       id,
-      { title, message, creator, tags, selectedFile },
+
+      { title, message, creator: req.userId, tags, name, selectedFile },
+
       { new: true }
     );
+
+    console.log("updatedPost is ", updatedPost);
+
     res.status(201).json({ data: updatedPost });
   } catch (error) {
     res.status(500).json({ message: error });
   }
 };
+
 const likePost = async (req, res) => {
   try {
     const { id } = req.params;
@@ -53,7 +94,6 @@ const likePost = async (req, res) => {
     const post = await Post.findById(id);
 
     const hasLiked = post.likes.includes(req.userId);
-    console.log("hasLiked is ", hasLiked);
 
     if (hasLiked) {
       post.likes = post.likes.filter((id) => String(id) !== req.userId);

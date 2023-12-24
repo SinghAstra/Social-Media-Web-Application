@@ -1,19 +1,5 @@
-import { jwtDecode } from "jwt-decode";
 import { AUTH, LOG_OUT } from "./actionTypes";
-import { googleLogout } from "@react-oauth/google";
 import { signInApi, signUpApi } from "../api";
-
-export const logInUser = (credential, navigate) => {
-  return async function (dispatch) {
-    try {
-      const userObject = jwtDecode(credential);
-      dispatch({ type: AUTH, payload: userObject });
-      navigate("/");
-    } catch (error) {
-      console.log("error in authAction is ", error);
-    }
-  };
-};
 
 export const signInUser = (formData, navigate) => {
   return async function (dispatch) {
@@ -44,7 +30,6 @@ export const signUpUser = (formData, navigate) => {
 export const logOutUser = (setUser) => {
   return async function (dispatch) {
     try {
-      googleLogout();
       localStorage.clear();
       dispatch({ type: LOG_OUT });
       setUser(null);

@@ -18,7 +18,7 @@ export default function Post({ post, setCurrentId }) {
     <div className="max-w-xs rounded-md overflow-hidden shadow-lg m-2 relative border-2 border-white">
       <img className="w-full opacity-80" src={post.selectedFile} alt="post" />
       <div className="absolute top-2 left-3 text-white">
-        <div className="text-base font-bold">{post.creator}</div>
+        <div className="text-base font-bold">{post.name}</div>
         <div className="text-xs font-semibold">
           {moment(post.createdAt).fromNow()}
         </div>

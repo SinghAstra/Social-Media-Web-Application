@@ -22,8 +22,8 @@ const Navbar = () => {
   return (
     <div>
       {/* lg:bg-gray-800  sm:bg-green-500 md:bg-orange-500 xl:bg-red-500 */}
-      <nav className="flex p-4 justify-between">
-        <h2 className="text-2xl tracking-wide font-medium text-white">
+      <nav className="flex p-2 justify-between bg-white shadow-md rounded-md m-3 items-center">
+        <h2 className="text-xl tracking-wide font-medium">
           Social Media Application
         </h2>
         {user ? (
@@ -35,10 +35,10 @@ const Navbar = () => {
                 className="rounded-full w-12 mr-2"
               />
             ) : (
-              <p className="mr-2 text-base">{user.name}</p>
+              <p className="mr-4 text-lg">{user.name}</p>
             )}
             <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-base"
               onClick={() => dispatch(logOutUser(setUser))}
             >
               Log Out
@@ -46,7 +46,7 @@ const Navbar = () => {
           </div>
         ) : (
           <Link to="/auth">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-base">
               Sign In
             </button>
           </Link>

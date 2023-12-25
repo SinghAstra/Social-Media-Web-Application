@@ -42,7 +42,7 @@ export default function Form({ currentId, setCurrentId }) {
 
   if (!user) {
     return (
-      <div className="w-full max-w-xs bg-white shadow-md rounded px-8 py-6 h-fit">
+      <div className="w-64 bg-white shadow-md rounded py-6 h-fit">
         <h1>
           Please Sign In in order to create your post and like other posts.
         </h1>
@@ -52,19 +52,16 @@ export default function Form({ currentId, setCurrentId }) {
 
   return (
     <div>
-      <div className="w-full max-w-xs">
-        <form
-          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
-          onSubmit={handleFormSubmit}
-        >
+      <div className="w-72 lg:w-64  bg-white shadow-md rounded p-2">
+        <form onSubmit={handleFormSubmit}>
           <div className="mb-4">
-            <h1 className="text-center">
+            <h1 className="text-center text-base font-semibold">
               {currentId ? "Edit" : "Create"} a Memory
             </h1>
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-semibold mb-2"
               htmlFor="title"
             >
               Title
@@ -85,7 +82,7 @@ export default function Form({ currentId, setCurrentId }) {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-semibold mb-2"
               htmlFor="message"
             >
               Message
@@ -106,7 +103,7 @@ export default function Form({ currentId, setCurrentId }) {
           </div>
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="block text-gray-700 text-sm font-semibold mb-2"
               htmlFor="tags"
             >
               Tags

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInUser, signUpUser } from "../../actions/auth";
 import { useDispatch } from "react-redux";
+import { TextField } from "@mui/material";
 
 const Auth = () => {
   const [formData, setFormData] = useState({
@@ -33,103 +34,130 @@ const Auth = () => {
     }
   };
 
+  const Styles = {
+    input: {
+      fontSize: 16,
+      fontFamily: "monospace",
+    },
+    label: {
+      fontSize: 16,
+      fontFamily: "monospace",
+    },
+  };
+
   return (
-    <div>
-      <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-        <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
-          <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white text-center">
-              {isSignUp ? "Sign Up" : "Sign In"}
-            </h1>
-            <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
-              {isSignUp && (
-                <>
-                  <input
-                    type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="First Name"
-                    value={formData.firstName}
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        firstName: e.target.value,
-                      });
-                    }}
-                    required
-                  />
-                  <input
-                    type="text"
-                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Last Name"
-                    value={formData.lastName}
-                    onChange={(e) => {
-                      setFormData({
-                        ...formData,
-                        lastName: e.target.value,
-                      });
-                    }}
-                    required
-                  />
-                </>
-              )}
-              <input
-                type="email"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Email"
-                value={formData.email}
+    <div className="flex flex-col bg-white items-center justify-center px-3 py-8 mx-auto w-80  rounded-lg shadow">
+      <div>
+        <h1 className="text-xl  font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl text-center mb-2">
+          {isSignUp ? "Sign Up" : "Sign In"}
+        </h1>
+        <form className="space-y-3" onSubmit={handleSubmit}>
+          {isSignUp && (
+            <>
+              <TextField
+                size="small"
+                fullWidth
+                inputProps={{ style: Styles.input }}
+                InputLabelProps={{ style: Styles.label }}
+                id="firstName"
+                label="First Name"
+                variant="outlined"
+                value={formData.firstName}
                 onChange={(e) => {
                   setFormData({
                     ...formData,
-                    email: e.target.value,
+                    firstName: e.target.value,
                   });
                 }}
                 required
               />
-              <input
-                type="password"
-                placeholder="Password"
-                className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                value={formData.password}
+              <TextField
+                size="small"
+                fullWidth
+                inputProps={{ style: Styles.input }}
+                InputLabelProps={{ style: Styles.label }}
+                id="lastName"
+                label="Last Name"
+                variant="outlined"
+                value={formData.lastName}
                 onChange={(e) => {
                   setFormData({
                     ...formData,
-                    password: e.target.value,
+                    lastName: e.target.value,
                   });
                 }}
                 required
               />
-              {isSignUp && (
-                <input
-                  type="confirm-password"
-                  placeholder="Confirm Password"
-                  className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  value={formData.confirmPassword}
-                  onChange={(e) => {
-                    setFormData({
-                      ...formData,
-                      confirmPassword: e.target.value,
-                    });
-                  }}
-                  required
-                />
-              )}
-              <button
-                type="submit"
-                className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-              >
-                {isSignUp ? "Sign Up" : "Sign In"}
-              </button>
-            </form>
-            <button
-              onClick={toggleSignUp}
-              className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              {isSignUp
-                ? ` Already have an account? Sign In`
-                : `Create a new account? Sign Up`}
-            </button>
-          </div>
-        </div>
+            </>
+          )}
+          <TextField
+            size="small"
+            fullWidth
+            inputProps={{ style: Styles.input }}
+            InputLabelProps={{ style: Styles.label }}
+            id="email"
+            label="Email"
+            variant="outlined"
+            value={formData.email}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                email: e.target.value,
+              });
+            }}
+            required
+          />
+          <TextField
+            size="small"
+            fullWidth
+            inputProps={{ style: Styles.input }}
+            InputLabelProps={{ style: Styles.label }}
+            id="password"
+            label="Password"
+            variant="outlined"
+            value={formData.password}
+            onChange={(e) => {
+              setFormData({
+                ...formData,
+                password: e.target.value,
+              });
+            }}
+            required
+          />
+          {isSignUp && (
+            <TextField
+              size="small"
+              fullWidth
+              inputProps={{ style: Styles.input }}
+              InputLabelProps={{ style: Styles.label }}
+              id="confirmPassword"
+              label="Confirm Password"
+              variant="outlined"
+              value={formData.confirmPassword}
+              onChange={(e) => {
+                setFormData({
+                  ...formData,
+                  confirmPassword: e.target.value,
+                });
+              }}
+              required
+            />
+          )}
+          <button
+            type="submit"
+            className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+          >
+            {isSignUp ? "Sign Up" : "Sign In"}
+          </button>
+        </form>
+        <button
+          onClick={toggleSignUp}
+          className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-2"
+        >
+          {isSignUp
+            ? ` Already have an account? Sign In`
+            : `Create a new account? Sign Up`}
+        </button>
       </div>
     </div>
   );

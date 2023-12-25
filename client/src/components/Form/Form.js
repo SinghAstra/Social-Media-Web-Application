@@ -2,16 +2,21 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/post";
 import FileBase64 from "react-file-base64";
+import { MuiChipsInput } from "mui-chips-input";
+import { TextField } from "@mui/material";
 
 export default function Form({ currentId, setCurrentId }) {
   const user = useSelector((state) => state.auth.authState);
+
   const [formData, setFormData] = useState({
     title: "",
     message: "",
     tags: [],
     selectedFile: "",
   });
+
   const dispatch = useDispatch();
+
   const posts = useSelector((state) => state.posts);
 
   const clearFormData = () => {
@@ -22,6 +27,7 @@ export default function Form({ currentId, setCurrentId }) {
       selectedFile: "",
     });
   };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     if (currentId) {
@@ -40,9 +46,34 @@ export default function Form({ currentId, setCurrentId }) {
     }
   }, [currentId, posts]);
 
+  const handleAddTag = (tag) => {
+    setFormData({
+      ...formData,
+      tags: [...formData.tags, tag],
+    });
+  };
+
+  const handleDeleteTag = (tagToDelete) => {
+    setFormData({
+      ...formData,
+      tags: formData.tags.filter((tag) => tag !== tagToDelete),
+    });
+  };
+
+  const Styles = {
+    input: {
+      fontSize: 16,
+      fontFamily: "monospace",
+    },
+    label: {
+      fontSize: 16,
+      fontFamily: "monospace",
+    },
+  };
+
   if (!user) {
     return (
-      <div className="w-64 bg-white shadow-md rounded py-6 h-fit">
+      <div className="w-72 lg:w-64 bg-white shadow-md rounded h-fit font-semibold text-left p-6">
         <h1>
           Please Sign In in order to create your post and like other posts.
         </h1>
@@ -60,17 +91,14 @@ export default function Form({ currentId, setCurrentId }) {
             </h1>
           </div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-semibold mb-2"
-              htmlFor="title"
-            >
-              Title
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <TextField
+              size="small"
+              fullWidth
+              inputProps={{ style: Styles.input }}
+              InputLabelProps={{ style: Styles.label }}
               id="title"
-              type="text"
-              placeholder="Title"
+              label="Title"
+              variant="outlined"
               value={formData.title}
               onChange={(e) => {
                 setFormData({
@@ -78,20 +106,18 @@ export default function Form({ currentId, setCurrentId }) {
                   title: e.target.value,
                 });
               }}
+              required
             />
           </div>
           <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-semibold mb-2"
-              htmlFor="message"
-            >
-              Message
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            <TextField
+              size="small"
+              fullWidth
+              inputProps={{ style: Styles.input }}
+              InputLabelProps={{ style: Styles.label }}
               id="message"
-              type="text"
-              placeholder="Message"
+              label="Message"
+              variant="outlined"
               value={formData.message}
               onChange={(e) => {
                 setFormData({
@@ -99,29 +125,27 @@ export default function Form({ currentId, setCurrentId }) {
                   message: e.target.value,
                 });
               }}
+              required
             />
           </div>
-          <div className="mb-4">
-            <label
-              className="block text-gray-700 text-sm font-semibold mb-2"
-              htmlFor="tags"
-            >
-              Tags
-            </label>
-            <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="tags"
-              type="text"
-              placeholder="Tags"
-              value={formData.tags.join(" ")}
-              onChange={(e) => {
-                setFormData({
-                  ...formData,
-                  tags: e.target.value.split(" "),
-                });
-              }}
+          <div className="mb-4 ">
+            <MuiChipsInput
+              placeholder="Tags (Type and Press Enter)"
+              fullWidth
+              inputProps={{ style: Styles.input }}
+              InputLabelProps={{ style: Styles.label }}
+              size="small"
+              label="Tags"
+              variant="outlined"
+              value={formData.tags}
+              onAddChip={handleAddTag}
+              onDeleteChip={handleDeleteTag}
+              hideClearAll
+              disableEdition
+              disableDeleteOnBackspace
             />
           </div>
+
           <div className="mb-6">
             <FileBase64
               type="file"

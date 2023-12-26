@@ -1,11 +1,11 @@
 import { TextField } from "@mui/material";
 import { MuiChipsInput } from "mui-chips-input";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { fetchPostBySearch } from "../../actions/post";
 
-const Search = () => {
+const Search = ({ initialSearch }) => {
   const [search, setSearch] = useState("");
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
@@ -33,10 +33,33 @@ const Search = () => {
   const handleSearchPost = () => {
     if (search.trim() || tags.length > 0) {
       dispatch(fetchPostBySearch({ search, tags }));
+      navigate(
+        `/posts/search?search=${search || ""}&tags=${
+          tags.length > 0 ? tags.join(",") : ""
+        }`
+      );
     } else {
       navigate("/");
     }
   };
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(initialSearch);
+    const initialSearchValue = searchParams.get("search") || "";
+    const initialTagsValue = searchParams.get("tags") || "";
+
+    console.log(
+      "initialSearchValue === null is ",
+      initialSearchValue === "null"
+    );
+
+    setSearch(initialSearchValue === "null" ? "" : initialSearchValue);
+    setTags(
+      initialTagsValue === "null" || initialTagsValue === ""
+        ? []
+        : initialTagsValue.split(",")
+    );
+  }, [initialSearch]);
 
   return (
     <div className="w-72 lg:w-64 bg-white shadow-md rounded p-2 mb-2">

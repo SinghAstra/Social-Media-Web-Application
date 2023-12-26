@@ -3,22 +3,24 @@ const mongoose = require("mongoose");
 
 const getPosts = async (req, res) => {
   try {
-    const posts = await Post.find({}).sort({ createdAt: -1 });
+    console.log("req.query is ", req.query);
+    let posts;
 
-    res.status(200).json({ data: posts });
-  } catch (error) {
-    res.status(500).json({ message: error });
-  }
-};
+    if (req.query.search || req.query.tags) {
+      const { search, tags } = req.query;
 
-const getPostsBySearch = async (req, res) => {
-  try {
-    const { search, tags } = req.query;
+      const title = new RegExp(search, "i");
 
-    const title = new RegExp(search, "i");
-    const posts = await Post.find({
-      $or: [{ title }, { tags: { $in: tags.split(",") } }],
-    });
+      const tagsArray = tags.split(",");
+
+      console.log("tagsArray is ", tagsArray);
+
+      posts = await Post.find({
+        $or: [{ title }, { tags: { $in: tagsArray } }],
+      });
+    } else {
+      posts = await Post.find();
+    }
 
     res.status(200).json({ data: posts });
   } catch (error) {
@@ -139,5 +141,4 @@ module.exports = {
   updatePost,
   deletePost,
   likePost,
-  getPostsBySearch,
 };

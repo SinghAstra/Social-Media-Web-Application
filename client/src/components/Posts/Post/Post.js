@@ -49,7 +49,7 @@ export default function Post({ post, setCurrentId }) {
         <div className="font-bold text-lg mb-1">{post.title}</div>
         <p className="text-gray-700 text-sm">{post.message}</p>
         <div className="flex justify-between items-center p-1">
-          <div className="flex flex-col p-1.5 m-1 justify-center items-center text-xs bg-yellow-500 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300">
+          <div className="flex flex-col p-1.5 m-1 justify-center items-center text-xs bg-blue-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300">
             <button onClick={() => handleLikePost(post._id)}>
               {hasLiked ? (
                 <ThumbUpIcon fontSize="small" />
@@ -62,13 +62,13 @@ export default function Post({ post, setCurrentId }) {
           <div className="flex justify-center items-center">
             {isCreator && (
               <>
-                <button className="p-1.5 m-1 bg-yellow-500 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300 ">
+                <button className="p-1.5 m-1 bg-blue-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300 ">
                   <EditNoteIcon
                     fontSize="small"
                     onClick={() => setCurrentId(post._id)}
                   />
                 </button>
-                <button className="p-1.5 m-1  bg-yellow-500 rounded-xl hover:rounded-3xl hover:bg-yellow-600 transition-all duration-300">
+                <button className="p-1.5 m-1  bg-blue-500 rounded-xl hover:rounded-3xl hover:bg-blue-600 transition-all duration-300">
                   <DeleteIcon
                     fontSize="small"
                     onClick={() => handleDeletePost(post._id)}
@@ -83,7 +83,7 @@ export default function Post({ post, setCurrentId }) {
         {post.tags.map((tag, index) => {
           return (
             <span
-              className="inline-block bg-yellow-500 rounded-full px-2 py-1 text-xs text-gray-700 mr-1 mb-1"
+              className="inline-block bg-blue-500 rounded-full px-2 py-1 text-xs text-gray-700 mr-1 mb-1"
               key={index}
             >
               #{tag}

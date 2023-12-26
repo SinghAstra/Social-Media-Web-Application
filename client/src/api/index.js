@@ -18,11 +18,7 @@ export const createPostApi = ({ title, message, name, tags, selectedFile }) =>
 export const getAllPostApi = () => API.get(`/post`);
 
 export const getPostBySearchApi = (searchQuery) =>
-  API.get(
-    `/post/search?search=${searchQuery.search || "null"}&tags=${
-      searchQuery.tags.join(",") || "null"
-    }`
-  );
+  API.get("/post", { params: searchQuery });
 
 export const updatePostApi = (id, updatedFormData) =>
   API.put(`/post/${id}`, updatedFormData);

@@ -12,6 +12,8 @@ const {
   UPDATE_POST,
   DELETE_POST,
   LIKE_POST,
+  START_LOADING,
+  END_LOADING,
 } = require("./actionTypes");
 
 export const createPost = ({ title, message, name, tags, selectedFile }) => {
@@ -34,8 +36,11 @@ export const createPost = ({ title, message, name, tags, selectedFile }) => {
 export const fetchAllPost = () => {
   return async function (dispatch) {
     try {
+      dispatch({ type: START_LOADING });
       const { data } = await getAllPostApi();
+      console.log("data --fetchAllPost ", data.data);
       dispatch({ type: FETCH_ALL_POST, payload: data.data });
+      dispatch({ type: END_LOADING });
     } catch (error) {
       console.log(error);
     }
@@ -45,8 +50,11 @@ export const fetchAllPost = () => {
 export const fetchPostBySearch = (searchQuery) => {
   return async function (dispatch) {
     try {
+      dispatch({ type: START_LOADING });
       const { data } = await getPostBySearchApi(searchQuery);
-      console.log("data is ", data);
+      console.log("data --fetchPostBySearch ", data.data);
+      dispatch({ type: FETCH_ALL_POST, payload: data.data });
+      dispatch({ type: END_LOADING });
     } catch (error) {
       console.log(error);
     }
@@ -66,6 +74,7 @@ export const updatePost = (updatedFormData) => {
     }
   };
 };
+
 export const deletePost = (id) => {
   return async function (dispatch) {
     try {

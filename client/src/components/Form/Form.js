@@ -83,11 +83,11 @@ export default function Form({ currentId, setCurrentId }) {
 
   return (
     <div>
-      <div className="w-72 lg:w-64  bg-white shadow-md rounded p-2">
+      <div className="w-72 lg:w-64  bg-white shadow-lg rounded p-2">
         <form onSubmit={handleFormSubmit}>
           <div className="mb-4">
             <h1 className="text-center text-base font-semibold">
-              {currentId ? "Edit" : "Create"} a Memory
+              {currentId ? "Edit" : "Create"} a Post
             </h1>
           </div>
           <div className="mb-4">

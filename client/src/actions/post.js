@@ -2,6 +2,7 @@ import {
   createPostApi,
   deletePostApi,
   getAllPostApi,
+  getPostBySearchApi,
   likePostApi,
   updatePostApi,
 } from "../api";
@@ -16,7 +17,6 @@ const {
 export const createPost = ({ title, message, name, tags, selectedFile }) => {
   return async function (dispatch) {
     try {
-      console.log("name in createPost Reducer is ", name);
       const { data } = await createPostApi({
         title,
         message,
@@ -36,6 +36,17 @@ export const fetchAllPost = () => {
     try {
       const { data } = await getAllPostApi();
       dispatch({ type: FETCH_ALL_POST, payload: data.data });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const fetchPostBySearch = (searchQuery) => {
+  return async function (dispatch) {
+    try {
+      const { data } = await getPostBySearchApi(searchQuery);
+      console.log("data is ", data);
     } catch (error) {
       console.log(error);
     }

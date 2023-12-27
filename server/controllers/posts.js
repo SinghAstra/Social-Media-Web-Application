@@ -7,6 +7,7 @@ const getPosts = async (req, res) => {
     let posts;
 
     if (req.query.search || req.query.tags) {
+      console.log("Inside the if of getPosts.");
       const { search, tags } = req.query;
 
       const title = new RegExp(search, "i");
@@ -14,11 +15,17 @@ const getPosts = async (req, res) => {
       const tagsArray = tags.split(",");
 
       console.log("tagsArray is ", tagsArray);
+      if (search === "") {
+        posts = await Post.find({ tags: { $in: tagsArray } });
+      } else {
+        posts = await Post.find({
+          $or: [{ title }, { tags: { $in: tagsArray } }],
+        });
+      }
 
-      posts = await Post.find({
-        $or: [{ title }, { tags: { $in: tagsArray } }],
-      });
+      // console.log("posts is ", posts);
     } else {
+      console.log("Inside the else of getPosts.");
       posts = await Post.find();
     }
 

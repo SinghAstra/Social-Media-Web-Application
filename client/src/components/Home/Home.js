@@ -4,14 +4,12 @@ import Form from "../Form/Form";
 import PaginationComp from "../Pagination/PaginationComp";
 import Search from "../Search/Search";
 import { useLocation } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { fetchAllPost, fetchPostBySearch } from "../../actions/post";
-import { CircularProgress, Grid } from "@mui/material";
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(null);
   const location = useLocation();
-  const isLoading = useSelector((state) => state.loading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -24,19 +22,6 @@ const Home = () => {
       dispatch(fetchAllPost());
     }
   }, [dispatch, location]);
-
-  if (isLoading) {
-    return (
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        style={{ height: "100vh" }}
-      >
-        <CircularProgress />
-      </Grid>
-    );
-  }
 
   return (
     <div>

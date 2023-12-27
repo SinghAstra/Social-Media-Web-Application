@@ -6,5 +6,5 @@ import { loadingReducer } from "./loading";
 export const rootReducer = combineReducers({
   posts: postReducer,
   auth: authReducer,
-  loading: loadingReducer,
+  loadingPosts: loadingReducer,
 });

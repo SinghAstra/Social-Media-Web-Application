@@ -8,5 +8,5 @@ export const AUTH = "AUTH";
 export const LOG_OUT = "LOG_OUT";
 export const SIGN_IN = "SIGN_IN";
 export const SIGN_UP = "SIGN_UP";
-export const START_LOADING = "START_LOADING";
-export const END_LOADING = "END_LOADING";
+export const START_LOADING_POSTS = "START_LOADING_POSTS";
+export const END_LOADING_POSTS = "END_LOADING_POSTS";

@@ -32,7 +32,7 @@ const Search = ({ initialSearch }) => {
 
   const handleSearchPost = () => {
     if (search.trim() || tags.length > 0) {
-      dispatch(fetchPostBySearch({ search, tags }));
+      dispatch(fetchPostBySearch({ search, tags: tags.join(",") }));
       navigate(
         `/posts/search?search=${search || ""}&tags=${
           tags.length > 0 ? tags.join(",") : ""

@@ -4,11 +4,23 @@ import Navbar from "./components/Navbar/Navbar";
 import { Routes, Route, Navigate } from "react-router-dom";
 import PostDetails from "./components/PostDetails/PostDetails";
 import { useSelector } from "react-redux";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 function App() {
   const user = useSelector((state) => state.auth.authState);
+  const theme = createTheme({
+    typography: {
+      allVariants: {
+        fontFamily: "Monospace",
+        textTransform: "none",
+      },
+      h6: {
+        fontSize: 12,
+      },
+    },
+  });
   return (
-    <div>
+    <ThemeProvider theme={theme}>
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Navigate to="/posts" />} />
@@ -21,7 +33,7 @@ function App() {
           element={user ? <Navigate to="/posts" /> : <Auth />}
         />
       </Routes>
-    </div>
+    </ThemeProvider>
   );
 }
 

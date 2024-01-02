@@ -15,7 +15,7 @@ API.interceptors.request.use((req) => {
 export const createPostApi = ({ title, message, name, tags, selectedFile }) =>
   API.post(`/post`, { title, message, name, tags, selectedFile });
 
-export const getAllPostApi = () => API.get(`/post`);
+export const getAllPostApi = (page) => API.get(`/post`, { params: page });
 
 export const getPostBySearchApi = (searchQuery) => {
   console.log("searchQuery is ", searchQuery);

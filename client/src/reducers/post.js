@@ -9,9 +9,14 @@ import {
 export const postReducer = (state = [], action) => {
   switch (action.type) {
     case FETCH_ALL_POST:
-      return action.payload;
+      return {
+        ...state,
+        posts: action.payload.posts,
+        page: action.payload.page,
+        numberOfPages: action.payload.numberOfPages,
+      };
     case CREATE_POST:
-      return [action.payload, ...state];
+      return { ...state, posts: [action.payload, ...state.posts] };
     case LIKE_POST:
     case UPDATE_POST:
       return state.map((post) =>

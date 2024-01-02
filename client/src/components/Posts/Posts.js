@@ -10,7 +10,7 @@ export default function Posts({ setCurrentId }) {
   const classes = useStyles();
 
   const posts = useSelector((state) => {
-    return state.posts;
+    return state.posts.posts;
   });
 
   if (isLoadingPosts) {
@@ -29,6 +29,7 @@ export default function Posts({ setCurrentId }) {
   return (
     <Grid
       className={classes.container}
+      sx={{ padding: "8px" }}
       container
       alignItems="stretch"
       spacing={1}
@@ -36,7 +37,7 @@ export default function Posts({ setCurrentId }) {
       {posts &&
         posts.map((post) => {
           return (
-            <Grid key={post._id} item xs={12} sm={6} md={3}>
+            <Grid item key={post._id} xs={12} sm={6} md={4} xl={3}>
               <Post post={post} setCurrentId={setCurrentId} />
             </Grid>
           );

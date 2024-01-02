@@ -48,11 +48,6 @@ const Search = ({ initialSearch }) => {
     const initialSearchValue = searchParams.get("search") || "";
     const initialTagsValue = searchParams.get("tags") || "";
 
-    console.log(
-      "initialSearchValue === null is ",
-      initialSearchValue === "null"
-    );
-
     setSearch(initialSearchValue === "null" ? "" : initialSearchValue);
     setTags(
       initialTagsValue === "null" || initialTagsValue === ""

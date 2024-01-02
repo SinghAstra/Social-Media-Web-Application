@@ -6,11 +6,19 @@ import Search from "../Search/Search";
 import { useLocation } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { fetchAllPost, fetchPostBySearch } from "../../actions/post";
+import { Grid } from "@mui/material";
 
 const Home = () => {
   const [currentId, setCurrentId] = useState(null);
   const location = useLocation();
   const dispatch = useDispatch();
+  const query = useQuery();
+  const page = query.get("page") || 1;
+
+  function useQuery() {
+    const { search } = useLocation();
+    return React.useMemo(() => new URLSearchParams(search), [search]);
+  }
 
   useEffect(() => {
     if (location.pathname === "/posts/search") {
@@ -19,23 +27,38 @@ const Home = () => {
       const tags = searchParams.get("tags") || "";
       dispatch(fetchPostBySearch({ search, tags }));
     } else {
-      dispatch(fetchAllPost());
+      dispatch(fetchAllPost(page));
     }
-  }, [dispatch, location]);
+  }, [dispatch, location, page]);
 
   return (
-    <div>
-      <div className=" flex flex-col-reverse lg:flex-row">
-        <div className=" w-full  lg:9/12 ">
-          <Posts setCurrentId={setCurrentId} />
-        </div>
-        <div className=" w-full lg:w-3/12 flex justify-start items-center pt-1 flex-col">
-          <Search initialSearch={location.search} />
-          <Form currentId={currentId} setCurrentId={setCurrentId} />
-          <PaginationComp />
-        </div>
-      </div>
-    </div>
+    <Grid
+      container
+      sx={{
+        display: "flex",
+        flexDirection: { xs: "column-reverse", lg: "row" },
+      }}
+    >
+      <Grid item xs={12} lg={9}>
+        <Posts setCurrentId={setCurrentId} />
+      </Grid>
+      <Grid
+        item
+        xs={12}
+        lg={3}
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "top",
+          alignItems: "center",
+          marginBottom: "16px",
+        }}
+      >
+        <Search initialSearch={location.search} />
+        <Form currentId={currentId} setCurrentId={setCurrentId} />
+        <PaginationComp page={page} />
+      </Grid>
+    </Grid>
   );
 };
 

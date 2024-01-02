@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { PaginationItem } from "@mui/material";
+import { useSelector } from "react-redux";
 
-const PaginationComp = () => {
+const PaginationComp = ({ page }) => {
+  const numberOfPages = useSelector((state) => state.posts.numberOfPages);
   return (
     <Pagination
       sx={{
@@ -17,13 +19,17 @@ const PaginationComp = () => {
         py: 1,
       }}
       size="small"
-      page={1}
-      count={10}
+      page={Number(page)}
+      count={numberOfPages}
       color="primary"
       variant="outlined"
       shape="rounded"
       renderItem={(item) => (
-        <PaginationItem {...item} component={Link} to={`/posts?page=${1}`} />
+        <PaginationItem
+          {...item}
+          component={Link}
+          to={`/posts?page=${item.page}`}
+        />
       )}
     />
   );

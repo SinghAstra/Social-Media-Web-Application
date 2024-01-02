@@ -26,6 +26,7 @@ export const createPost = ({ title, message, name, tags, selectedFile }) => {
         tags,
         selectedFile,
       });
+      console.log("data.data in createPost action is ", data.data);
       dispatch({ type: CREATE_POST, payload: data.data });
     } catch (error) {
       console.log(error);
@@ -33,13 +34,20 @@ export const createPost = ({ title, message, name, tags, selectedFile }) => {
   };
 };
 
-export const fetchAllPost = () => {
+export const fetchAllPost = (page) => {
   return async function (dispatch) {
     try {
       dispatch({ type: START_LOADING_POSTS });
-      const { data } = await getAllPostApi();
-      console.log("data --fetchAllPost ", data.data);
-      dispatch({ type: FETCH_ALL_POST, payload: data.data });
+      const { data } = await getAllPostApi(page);
+      console.log("fetchAll Post data is  ", data);
+      dispatch({
+        type: FETCH_ALL_POST,
+        payload: {
+          posts: data.data,
+          page: data.page,
+          numberOfPages: data.totalPages,
+        },
+      });
       dispatch({ type: END_LOADING_POSTS });
     } catch (error) {
       console.log(error);
@@ -52,7 +60,6 @@ export const fetchPostBySearch = (searchQuery) => {
     try {
       dispatch({ type: START_LOADING_POSTS });
       const { data } = await getPostBySearchApi(searchQuery);
-      console.log("data --fetchPostBySearch ", data.data);
       dispatch({ type: FETCH_ALL_POST, payload: data.data });
       dispatch({ type: END_LOADING_POSTS });
     } catch (error) {

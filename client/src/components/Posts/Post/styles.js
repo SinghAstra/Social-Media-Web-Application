@@ -45,7 +45,7 @@ export default makeStyles({
     padding: "0 16px",
   },
   cardActions: {
-    padding: "0 4px 4px 4px",
+    padding: "0 8px 4px 8px",
     display: "flex",
     justifyContent: "space-between",
   },

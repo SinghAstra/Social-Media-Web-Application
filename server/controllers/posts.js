@@ -3,33 +3,42 @@ const mongoose = require("mongoose");
 
 const getPosts = async (req, res) => {
   try {
-    console.log("req.query is ", req.query);
     let posts;
+    console.log("req.query is ", req.query);
+    const { search, tags, page = 1, limit = 8 } = req.query;
 
-    if (req.query.search || req.query.tags) {
-      console.log("Inside the if of getPosts.");
-      const { search, tags } = req.query;
+    let totalDocuments = await Post.countDocuments({});
+    let totalPages = Math.ceil(totalDocuments / limit);
 
+    console.log("totalDocuments is ", totalDocuments);
+    console.log("totalPages is ", totalPages);
+
+    if (search || tags) {
       const title = new RegExp(search, "i");
 
       const tagsArray = tags.split(",");
 
-      console.log("tagsArray is ", tagsArray);
       if (search === "") {
-        posts = await Post.find({ tags: { $in: tagsArray } });
+        posts = await Post.find({ tags: { $in: tagsArray } })
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .skip((page - 1) * limit);
       } else {
         posts = await Post.find({
           $or: [{ title }, { tags: { $in: tagsArray } }],
-        });
+        })
+          .sort({ createdAt: -1 })
+          .limit(limit)
+          .skip((page - 1) * limit);
       }
-
-      // console.log("posts is ", posts);
     } else {
-      console.log("Inside the else of getPosts.");
-      posts = await Post.find();
+      posts = await Post.find()
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
     }
 
-    res.status(200).json({ data: posts });
+    res.status(200).json({ data: posts, page, totalPages });
   } catch (error) {
     res.status(500).json({ message: error });
   }

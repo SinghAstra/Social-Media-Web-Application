@@ -12,7 +12,6 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../actions/post";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import ThumbUpAltIcon from "@mui/icons-material/ThumbUpAlt";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -88,14 +87,23 @@ const NewPost = ({ post, setCurrentId }) => {
         </Typography>
       </CardContent>
       <CardActions className={classes.cardActions}>
-        <button onClick={() => handleLikePost(post._id)} textColor="primary">
+        <Button
+          onClick={() => handleLikePost(post._id)}
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           {hasLiked ? (
             <ThumbUpIcon fontSize="small" color="primary" />
           ) : (
             <ThumbUpOutlinedIcon fontSize="small" color="primary" />
           )}
-          <p className="text-xs">{post.likes.length}</p>
-        </button>
+          <Typography variant="body1" sx={{ paddingLeft: "2px" }}>
+            {post.likes.length}
+          </Typography>
+        </Button>
         {isCreator && (
           <Button
             size="small"

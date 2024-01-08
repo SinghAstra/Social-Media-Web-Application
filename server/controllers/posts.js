@@ -3,17 +3,21 @@ const mongoose = require("mongoose");
 
 const getPosts = async (req, res) => {
   try {
+    // console.log("In the getPosts");
     let posts;
-    console.log("req.query is ", req.query);
+    // console.log("req.query is ", req.query);
     const { search, tags, page = 1, limit = 8 } = req.query;
 
     let totalDocuments = await Post.countDocuments({});
     let totalPages = Math.ceil(totalDocuments / limit);
 
-    console.log("totalDocuments is ", totalDocuments);
-    console.log("totalPages is ", totalPages);
+    // console.log("totalDocuments is ", totalDocuments);
+    // console.log("totalPages is ", totalPages);
+    // console.log("search is ", search);
+    // console.log("tags is ", tags);
 
     if (search || tags) {
+      // console.log("Inside the if statement.");
       const title = new RegExp(search, "i");
 
       const tagsArray = tags.split(",");
@@ -32,6 +36,8 @@ const getPosts = async (req, res) => {
           .skip((page - 1) * limit);
       }
     } else {
+      // console.log("Inside the else statement.");
+
       posts = await Post.find()
         .sort({ createdAt: -1 })
         .skip((page - 1) * limit)
@@ -49,21 +55,24 @@ const createPost = async (req, res) => {
     if (!req.userId) {
       return res.status(400).json({ message: "UnAuthenticated" });
     }
-
-    const { title, message, tags, selectedFile, name } = req.body;
-
-    const post = new Post({
+    const url = req.protocol + "://" + req.get("host");
+    const file = url + "/files/" + req.file.filename;
+    const { title, message, tags, name } = req.body;
+    const post = await Post.create({
       title,
       message,
       creator: req.userId,
       tags,
       name,
-      selectedFile,
+      selectedFile: file,
     });
-
+    console.log("file is ", file);
     await post.save();
-
-    res.status(201).json({ data: post });
+    res.status(201).json({
+      message: "Success",
+      selectedFile: file,
+      post,
+    });
   } catch (error) {
     res.status(500).json({ message: error });
   }

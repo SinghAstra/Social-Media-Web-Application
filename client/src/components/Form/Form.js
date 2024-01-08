@@ -1,9 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/post";
-import FileBase64 from "react-file-base64";
 import { MuiChipsInput } from "mui-chips-input";
-import { TextField } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import styled from "@emotion/styled";
+
+const VisuallyHiddenInput = styled("input")({
+  clip: "rect(0 0 0 0)",
+  clipPath: "inset(50%)",
+  height: 1,
+  overflow: "hidden",
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+  whiteSpace: "nowrap",
+  width: 1,
+});
 
 export default function Form({ currentId, setCurrentId }) {
   const user = useSelector((state) => state.auth.authState);
@@ -30,11 +43,19 @@ export default function Form({ currentId, setCurrentId }) {
 
   const handleFormSubmit = (e) => {
     e.preventDefault();
+    const formDataObject = new FormData();
+    formDataObject.append("title", formData.title);
+    formDataObject.append("message", formData.message);
+    formDataObject.append("name", user?.name);
+    formData.tags.forEach((tag, index) => {
+      formDataObject.append(`tags[${index}]`, tag);
+    });
+    formDataObject.append("selectedFile", formData.selectedFile);
     if (currentId) {
-      dispatch(updatePost({ ...formData, name: user?.name }));
+      dispatch(updatePost(formDataObject));
       setCurrentId(null);
     } else {
-      dispatch(createPost({ ...formData, name: user?.name }));
+      dispatch(createPost(formDataObject));
     }
     clearFormData();
   };
@@ -147,16 +168,21 @@ export default function Form({ currentId, setCurrentId }) {
           </div>
 
           <div className="mb-6">
-            <FileBase64
-              type="file"
-              multiple={false}
-              onDone={({ base64 }) => {
-                setFormData({
-                  ...formData,
-                  selectedFile: base64,
-                });
+            <Button
+              component="label"
+              variant="contained"
+              sx={{ width: "100%" }}
+              value={formData.selectedFile}
+              onChange={(e) => {
+                if (e.target.files.length > 0) {
+                  setFormData({ ...formData, selectedFile: e.target.files[0] });
+                }
               }}
-            />
+              startIcon={<CloudUploadIcon />}
+            >
+              Upload Image
+              <VisuallyHiddenInput type="file" />
+            </Button>
           </div>
           <div className="">
             <button

@@ -18,10 +18,10 @@ mongoose
     console.log(err.message);
   });
 
-app.use(bodyParser.urlencoded({ limit: "30mb", extended: true }));
-app.use(bodyParser.json({ limit: "30mb", extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cors());
-
+app.use("/files", express.static("upload"));
 app.use("/post", postRoutes);
 app.use("/user", userRoutes);
 

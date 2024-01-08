@@ -8,10 +8,11 @@ const {
   likePost,
 } = require("../controllers/posts");
 const authMiddleware = require("../middleware/auth");
+const processFile = require("../processFile");
 
 router.get("/", getPosts);
 router.get("/search", getPosts);
-router.post("/", authMiddleware, createPost);
+router.post("/", authMiddleware, processFile, createPost);
 router.put("/:id", authMiddleware, updatePost);
 router.delete("/:id", authMiddleware, deletePost);
 router.put("/:id/likePost", authMiddleware, likePost);

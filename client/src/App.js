@@ -1,24 +1,15 @@
 import Home from "./components/Home/Home";
 import Auth from "./components/Auth/Auth";
 import Navbar from "./components/Navbar/Navbar";
-import { Routes, Route, Navigate } from "react-router-dom";
 import PostDetails from "./components/PostDetails/PostDetails";
+import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 
 function App() {
   const user = useSelector((state) => state.auth.authState);
-  const theme = createTheme({
-    typography: {
-      allVariants: {
-        fontFamily: "Monospace",
-        textTransform: "none",
-      },
-      h6: {
-        fontSize: 12,
-      },
-    },
-  });
+
   return (
     <ThemeProvider theme={theme}>
       <Navbar />

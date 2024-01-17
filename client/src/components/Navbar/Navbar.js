@@ -19,7 +19,7 @@ const Navbar = () => {
       }
     }
     setUser(JSON.parse(localStorage.getItem("user")));
-  }, [location]);
+  }, [dispatch, location, user?.token]);
   return (
     <Toolbar
       sx={{

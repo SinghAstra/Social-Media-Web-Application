@@ -34,7 +34,6 @@ const Home = () => {
       sx={{
         display: "flex",
         flexDirection: { xs: "column-reverse", lg: "row" },
-        backgroundColor: "lightsalmon",
       }}
     >
       <Grid item xs={12} lg={9}>

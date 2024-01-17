@@ -1,23 +1,27 @@
 import React from "react";
 import useStyles from "./styles";
 import {
+  Avatar,
   Button,
   Card,
   CardActions,
   CardContent,
+  CardHeader,
   CardMedia,
+  Chip,
+  IconButton,
+  Stack,
   Typography,
 } from "@mui/material";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../actions/post";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const NewPost = ({ post, setCurrentId }) => {
-  const classes = useStyles();
+const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.authState);
@@ -47,50 +51,47 @@ const NewPost = ({ post, setCurrentId }) => {
   }
 
   return (
-    <Card className={classes.card} sx={{ fontFamily: "monospace" }}>
-      <CardMedia
-        className={classes.media}
-        image={
-          post.selectedFile ||
-          "https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png"
+    <Card sx={{ maxWidth: 345 }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ backgroundColor: "red" }} aria-label="creator">
+            {post.name[0]}
+          </Avatar>
+        }
+        action={
+          isCreator && (
+            <IconButton
+              aria-label="edit"
+              onClick={() => setCurrentId(post._id)}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )
         }
         title={post.title}
+        subheader={moment(post.createdAt).fromNow()}
       />
-      <div className={classes.overlay}>
-        <Typography variant="body1">{post.name}</Typography>
-        <Typography variant="body2">
-          {moment(post.createdAt).fromNow()}
-        </Typography>
-      </div>
-      <div className={classes.overlay2}>
-        {isCreator && (
-          <Button
-            style={{ color: "white" }}
-            size="small"
-            onClick={() => setCurrentId(post._id)}
-          >
-            <MoreHorizIcon fontSize="medium" />
-          </Button>
-        )}
-      </div>
-      <div className={classes.details}>
-        <Typography variant="body2" color="textSecondary" component="h2">
-          {post.tags.map((tag) => `#${tag} `)}
-        </Typography>
-      </div>
-      <Typography className={classes.title} gutterBottom variant="h5">
-        {post.title}
-      </Typography>
+      <CardMedia
+        sx={{ height: 240 }}
+        image={post.selectedFile}
+        title={post.title}
+      />
       <CardContent>
-        <Typography variant="body2" color="textSecondary" component="p">
+        <Typography variant="body2" color="textSecondary">
           {post.message}
         </Typography>
+        <Stack mt={2} spacing={1} direction={"row"}>
+          {post.tags.map((tag) => (
+            <Chip label={`#${tag} `} color="primary" />
+          ))}
+        </Stack>
       </CardContent>
-      <CardActions className={classes.cardActions}>
+      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button
           onClick={() => handleLikePost(post._id)}
           sx={{
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
           }}
@@ -100,9 +101,7 @@ const NewPost = ({ post, setCurrentId }) => {
           ) : (
             <ThumbUpOutlinedIcon fontSize="small" color="primary" />
           )}
-          <Typography variant="body1" sx={{ paddingLeft: "2px" }}>
-            {post.likes.length}
-          </Typography>
+          <Typography variant="body2">{post.likes.length}</Typography>
         </Button>
         {isCreator && (
           <Button
@@ -118,4 +117,4 @@ const NewPost = ({ post, setCurrentId }) => {
   );
 };
 
-export default NewPost;
+export default Post;

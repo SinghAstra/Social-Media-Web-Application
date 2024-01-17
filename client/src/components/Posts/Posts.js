@@ -2,12 +2,9 @@ import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
 import { CircularProgress, Grid } from "@mui/material";
-import useStyles from "./styles";
 
-export default function Posts({ setCurrentId }) {
+const Posts = ({ setCurrentId }) => {
   const isLoadingPosts = useSelector((state) => state.loadingPosts);
-
-  const classes = useStyles();
 
   const posts = useSelector((state) => {
     return state.posts.posts;
@@ -25,15 +22,8 @@ export default function Posts({ setCurrentId }) {
       </Grid>
     );
   }
-
   return (
-    <Grid
-      className={classes.container}
-      sx={{ padding: "8px" }}
-      container
-      alignItems="stretch"
-      spacing={1}
-    >
+    <Grid sx={{ padding: "8px" }} container alignItems="stretch" spacing={1}>
       {posts &&
         posts.map((post) => {
           return (
@@ -44,4 +34,6 @@ export default function Posts({ setCurrentId }) {
         })}
     </Grid>
   );
-}
+};
+
+export default Posts;

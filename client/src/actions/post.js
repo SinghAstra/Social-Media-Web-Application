@@ -19,12 +19,7 @@ const {
 export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
-      console.log(
-        "In the CreatePost Action formDataObject is ",
-        formDataObject
-      );
       const { data } = await createPostApi(formDataObject);
-      console.log("data.data in createPost action is ", data.data);
       dispatch({ type: CREATE_POST, payload: data.data });
     } catch (error) {
       console.log(error);
@@ -36,9 +31,7 @@ export const fetchAllPost = (page) => {
   return async function (dispatch) {
     try {
       dispatch({ type: START_LOADING_POSTS });
-      console.log("page is ", page);
       const { data } = await getAllPostApi(page);
-      console.log("fetchAll Post data is  ", data);
       dispatch({
         type: FETCH_ALL_POST,
         payload: {

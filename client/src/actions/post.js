@@ -20,8 +20,9 @@ export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
       const { data } = await createPostApi(formDataObject);
+      console.log("createPost data is ", data);
       console.log("createPost data is ", data.data);
-      dispatch({ type: CREATE_POST, payload: data.data });
+      dispatch({ type: CREATE_POST, payload: data.post });
     } catch (error) {
       console.log(error);
     }

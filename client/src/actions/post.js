@@ -20,6 +20,7 @@ export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
       const { data } = await createPostApi(formDataObject);
+      console.log("createPost data is ", data.data);
       dispatch({ type: CREATE_POST, payload: data.data });
     } catch (error) {
       console.log(error);
@@ -88,6 +89,7 @@ export const likePost = (id) => {
   return async function (dispatch) {
     try {
       const { data } = await likePostApi(id);
+      console.log("data in likePost is ", data.data);
       dispatch({ type: LIKE_POST, payload: data.data });
     } catch (error) {
       console.log(error);

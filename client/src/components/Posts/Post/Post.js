@@ -81,8 +81,13 @@ const Post = ({ post, setCurrentId }) => {
           {post.message}
         </Typography>
         <Stack mt={2} spacing={1} direction={"row"}>
-          {post.tags.map((tag) => (
-            <Chip label={`#${tag} `} color="primary" />
+          {post.tags.map((tag, index) => (
+            <Chip
+              label={`#${tag} `}
+              color="primary"
+              sx={{ fontFamily: "monospace" }}
+              key={index}
+            />
           ))}
         </Stack>
       </CardContent>

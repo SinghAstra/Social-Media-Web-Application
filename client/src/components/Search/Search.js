@@ -64,8 +64,8 @@ const Search = ({ initialSearch }) => {
           fullWidth
           inputProps={{ style: Styles.input }}
           InputLabelProps={{ style: Styles.label }}
-          id="searchPost"
-          label="Search Post"
+          id="title"
+          label="Title"
           variant="outlined"
           value={search}
           onChange={(e) => {
@@ -94,7 +94,7 @@ const Search = ({ initialSearch }) => {
         onClick={handleSearchPost}
         className="bg-blue-500 hover:bg-blue-700 mb-2 shadow-md w-full text-white font-medium  py-2 px-4 rounded focus:outline-none focus:shadow-outline"
       >
-        Search
+        Search Post
       </button>
     </div>
   );

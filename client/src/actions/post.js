@@ -54,7 +54,15 @@ export const fetchPostBySearch = (searchQuery) => {
     try {
       dispatch({ type: START_LOADING_POSTS });
       const { data } = await getPostBySearchApi(searchQuery);
-      dispatch({ type: FETCH_ALL_POST, payload: data.data });
+      console.log("data is ", data);
+      dispatch({
+        type: FETCH_ALL_POST,
+        payload: {
+          posts: data.data,
+          page: data.page,
+          numberOfPages: data.totalPages,
+        },
+      });
       dispatch({ type: END_LOADING_POSTS });
     } catch (error) {
       console.log(error);

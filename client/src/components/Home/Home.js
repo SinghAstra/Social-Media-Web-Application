@@ -22,6 +22,8 @@ const Home = () => {
     if (location.pathname === "/posts/search") {
       const search = query.get("search") || "";
       const tags = query.get("tags") || "";
+      console.log("search is ", search);
+      console.log("tags is ", tags);
       dispatch(fetchPostBySearch({ search, tags }));
     } else {
       dispatch(fetchAllPost(page));

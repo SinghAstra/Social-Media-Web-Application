@@ -30,7 +30,7 @@ export default function Form({ currentId, setCurrentId }) {
 
   const dispatch = useDispatch();
 
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector((state) => state.posts.posts);
 
   const clearFormData = () => {
     setFormData({
@@ -47,12 +47,12 @@ export default function Form({ currentId, setCurrentId }) {
     formDataObject.append("title", formData.title);
     formDataObject.append("message", formData.message);
     formDataObject.append("name", user?.name);
-    formData.tags.forEach((tag, index) => {
-      formDataObject.append(`tags[${index}]`, tag);
+    formData.tags.forEach((tag) => {
+      formDataObject.append(`tags`, tag);
     });
     formDataObject.append("selectedFile", formData.selectedFile);
     if (currentId) {
-      dispatch(updatePost(formDataObject));
+      dispatch(updatePost(formDataObject, currentId));
       setCurrentId(null);
     } else {
       dispatch(createPost(formDataObject));

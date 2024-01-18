@@ -19,12 +19,9 @@ export const postReducer = (state = [], action) => {
       return { ...state, posts: [action.payload, ...state.posts] };
     case LIKE_POST:
     case UPDATE_POST:
-      console.log("state.posts is ", state.posts);
-      console.log("action.payload._id is ", action.payload._id);
       return {
         ...state,
         posts: state.posts.map((post) => {
-          console.log("post._id is", post._id);
           return post._id === action.payload._id ? action.payload : post;
         }),
       };

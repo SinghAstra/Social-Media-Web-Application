@@ -41,6 +41,7 @@ const createPost = async (req, res) => {
     const url = req.protocol + "://" + req.get("host");
     const file = url + "/files/" + req.file.filename;
     const { title, message, tags, name } = req.body;
+
     const post = await Post.create({
       title,
       message,

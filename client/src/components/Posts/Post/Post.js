@@ -1,5 +1,4 @@
 import React from "react";
-import useStyles from "./styles";
 import {
   Avatar,
   Button,
@@ -80,16 +79,18 @@ const Post = ({ post, setCurrentId }) => {
         <Typography variant="body2" color="textSecondary">
           {post.message}
         </Typography>
-        <Stack mt={2} spacing={1} direction={"row"}>
-          {post.tags.map((tag, index) => (
-            <Chip
-              label={`#${tag} `}
-              color="primary"
-              sx={{ fontFamily: "monospace" }}
-              key={index}
-            />
-          ))}
-        </Stack>
+        {post.tags?.length > 0 && (
+          <Stack mt={2} spacing={1} direction={"row"}>
+            {post.tags.map((tag, index) => (
+              <Chip
+                label={`#${tag} `}
+                color="primary"
+                sx={{ fontFamily: "monospace" }}
+                key={index}
+              />
+            ))}
+          </Stack>
+        )}
       </CardContent>
       <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
         <Button

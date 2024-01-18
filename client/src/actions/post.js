@@ -20,8 +20,6 @@ export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
       const { data } = await createPostApi(formDataObject);
-      console.log("createPost data is ", data);
-      console.log("createPost data is ", data.data);
       dispatch({ type: CREATE_POST, payload: data.post });
     } catch (error) {
       console.log(error);
@@ -54,7 +52,6 @@ export const fetchPostBySearch = (searchQuery) => {
     try {
       dispatch({ type: START_LOADING_POSTS });
       const { data } = await getPostBySearchApi(searchQuery);
-      console.log("data is ", data);
       dispatch({
         type: FETCH_ALL_POST,
         payload: {
@@ -70,13 +67,10 @@ export const fetchPostBySearch = (searchQuery) => {
   };
 };
 
-export const updatePost = (updatedFormData) => {
+export const updatePost = (updatedFormData, currentId) => {
   return async function (dispatch) {
     try {
-      const { data } = await updatePostApi(
-        updatedFormData._id,
-        updatedFormData
-      );
+      const { data } = await updatePostApi(currentId, updatedFormData);
       dispatch({ type: UPDATE_POST, payload: data.data });
     } catch (error) {
       console.log(error);
@@ -98,7 +92,6 @@ export const likePost = (id) => {
   return async function (dispatch) {
     try {
       const { data } = await likePostApi(id);
-      console.log("data in likePost is ", data.data);
       dispatch({ type: LIKE_POST, payload: data.data });
     } catch (error) {
       console.log(error);

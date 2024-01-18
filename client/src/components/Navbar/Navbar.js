@@ -3,12 +3,30 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { logOutUser } from "../../actions/auth";
 import { jwtDecode } from "jwt-decode";
-import { Avatar, Button, Toolbar, Typography } from "@mui/material";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 const Navbar = () => {
   const location = useLocation();
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+  const [anchorEl, setAnchorEl] = useState(null);
   const dispatch = useDispatch();
+
+  const handleUserPopOver = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
 
   useEffect(() => {
     const token = user?.token;
@@ -34,23 +52,48 @@ const Navbar = () => {
       {user ? (
         <>
           {user.picture ? (
-            <Avatar alt="user" src={user.picture} />
+            <Avatar alt="user" src={user.picture} onClick={handleUserPopOver} />
           ) : (
-            <Typography variant="subtitle1">{user.name}</Typography>
+            <Avatar
+              alt="user"
+              sx={{ backgroundColor: "red", cursor: "pointer" }}
+              onClick={handleUserPopOver}
+            >
+              {user.name[0]}
+            </Avatar>
           )}
-          <Button
-            variant="contained"
-            sx={{ marginLeft: "8px" }}
-            onClick={() => dispatch(logOutUser(setUser))}
-          >
-            Log Out
-          </Button>
         </>
       ) : (
         <Link to="/auth">
-          <Button variant="contained">Sign In</Button>
+          <Button variant="outlined">Sign In</Button>
         </Link>
       )}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            handleClose();
+          }}
+        >
+          Profile
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            dispatch(logOutUser(setUser));
+            handleClose();
+          }}
+        >
+          Log Out
+        </MenuItem>
+      </Menu>
     </Toolbar>
   );
 };

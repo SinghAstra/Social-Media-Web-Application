@@ -6,21 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { fetchPostBySearch } from "../../actions/post";
 
 const Search = ({ initialSearch }) => {
-  const [search, setSearch] = useState("");
+  const [title, setTitle] = useState("");
   const [tags, setTags] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const Styles = {
-    input: {
-      fontSize: 16,
-      fontFamily: "monospace",
-    },
-    label: {
-      fontSize: 16,
-      fontFamily: "monospace",
-    },
-  };
 
   const handleAddTag = (tag) => {
     setTags([...tags, tag]);
@@ -31,10 +20,10 @@ const Search = ({ initialSearch }) => {
   };
 
   const handleSearchPost = () => {
-    if (search.trim() || tags.length > 0) {
-      dispatch(fetchPostBySearch({ search, tags: tags.join(",") }));
+    if (title.trim() || tags.length > 0) {
+      dispatch(fetchPostBySearch({ search: title, tags: tags.join(",") }));
       navigate(
-        `/posts/search?search=${search || ""}&tags=${
+        `/posts/search?search=${title || ""}&tags=${
           tags.length > 0 ? tags.join(",") : ""
         }`
       );
@@ -45,14 +34,13 @@ const Search = ({ initialSearch }) => {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(initialSearch);
-    const initialSearchValue = searchParams.get("search") || "";
-    const initialTagsValue = searchParams.get("tags") || "";
-
-    setSearch(initialSearchValue === "null" ? "" : initialSearchValue);
+    const initialTitleValue = searchParams.get("search");
+    const initialTagsValue = searchParams.get("tags");
+    setTitle(initialTitleValue !== null ? initialTitleValue : "");
     setTags(
-      initialTagsValue === "null" || initialTagsValue === ""
-        ? []
-        : initialTagsValue.split(",")
+      initialTagsValue !== null && initialTagsValue !== ""
+        ? initialTagsValue.split(",")
+        : []
     );
   }, [initialSearch]);
 
@@ -62,14 +50,12 @@ const Search = ({ initialSearch }) => {
         <TextField
           size="small"
           fullWidth
-          inputProps={{ style: Styles.input }}
-          InputLabelProps={{ style: Styles.label }}
           id="title"
           label="Title"
           variant="outlined"
-          value={search}
+          value={title}
           onChange={(e) => {
-            setSearch(e.target.value);
+            setTitle(e.target.value);
           }}
         />
       </div>
@@ -77,8 +63,6 @@ const Search = ({ initialSearch }) => {
         <MuiChipsInput
           placeholder="Tags (Type and Press Enter)"
           fullWidth
-          inputProps={{ style: Styles.input }}
-          InputLabelProps={{ style: Styles.label }}
           size="small"
           label="Tags"
           variant="outlined"

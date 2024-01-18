@@ -18,7 +18,6 @@ export const createPostApi = (formDataObject) =>
 export const getAllPostApi = (page) => API.get(`/post`, { params: { page } });
 
 export const getPostBySearchApi = (searchQuery) => {
-  console.log("searchQuery is ", searchQuery);
   return API.get("/post", { params: searchQuery });
 };
 

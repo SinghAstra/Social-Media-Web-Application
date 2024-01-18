@@ -46,7 +46,7 @@ const Navbar = () => {
         borderRadius: "8px",
       }}
     >
-      <Typography variant="h4" sx={{ flex: 1 }}>
+      <Typography variant="h4" sx={{ flex: 1 }} component={Link} to={"/posts"}>
         Social Media Application
       </Typography>
       {user ? (

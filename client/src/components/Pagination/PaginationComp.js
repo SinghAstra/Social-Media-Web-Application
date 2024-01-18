@@ -1,11 +1,33 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Pagination from "@mui/material/Pagination";
 import { PaginationItem } from "@mui/material";
 import { useSelector } from "react-redux";
 
 const PaginationComp = ({ page }) => {
+  const [url, setUrl] = useState(`/posts?`);
   const numberOfPages = useSelector((state) => state.posts.numberOfPages);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/posts/search") {
+      const searchParams = new URLSearchParams(location.search);
+      const initialTitleValue = searchParams.get("search");
+      const initialTagsValue = searchParams.get("tags");
+      const title = initialTitleValue !== null ? initialTitleValue : "";
+      const tags =
+        initialTagsValue !== null && initialTagsValue !== ""
+          ? initialTagsValue.split(",")
+          : [];
+      setUrl(
+        `/posts/search?search=${title || ""}&tags=${
+          tags.length > 0 ? tags.join(",") : ""
+        }&`
+      );
+    } else {
+      setUrl("/posts?");
+    }
+  }, [location, page]);
   return (
     <Pagination
       sx={{
@@ -28,7 +50,7 @@ const PaginationComp = ({ page }) => {
         <PaginationItem
           {...item}
           component={Link}
-          to={`/posts?page=${item.page}`}
+          to={`${url}page=${item.page}`}
         />
       )}
     />

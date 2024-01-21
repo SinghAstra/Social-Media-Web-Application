@@ -1,5 +1,6 @@
 import { AUTH, LOG_OUT } from "./actionTypes";
 import { signInApi, signUpApi } from "../api";
+import { showNotification } from "./notifications";
 
 export const signInUser = (formData, navigate) => {
   return async function (dispatch) {
@@ -7,9 +8,10 @@ export const signInUser = (formData, navigate) => {
       const { data } = await signInApi(formData);
       data.result = { ...data.result, token: data.token };
       dispatch({ type: AUTH, payload: data.result });
+      dispatch(showNotification(data.message, "success"));
       navigate("/");
     } catch (error) {
-      console.log("error in signInUser is ", error);
+      dispatch(showNotification(error.response.data.message, "error"));
     }
   };
 };
@@ -20,9 +22,10 @@ export const signUpUser = (formData, navigate) => {
       const { data } = await signUpApi(formData);
       data.result = { ...data.result, token: data.token };
       dispatch({ type: AUTH, payload: data.result });
+      dispatch(showNotification(data.message, "success"));
       navigate("/");
     } catch (error) {
-      console.log("error in signUpUser is ", error);
+      dispatch(showNotification(error.response.data.message, "error"));
     }
   };
 };

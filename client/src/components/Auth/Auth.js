@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInUser, signUpUser } from "../../actions/auth";
+import { signIn, signUp } from "../../actions/auth";
 import { useDispatch } from "react-redux";
 import { TextField } from "@mui/material";
 import { Formik } from "formik";
@@ -134,10 +134,10 @@ const Auth = () => {
     setSubmitting(true);
 
     if (isSignUp) {
-      dispatch(signUpUser(values, navigate));
+      dispatch(signUp(values, navigate));
     } else {
       dispatch(
-        signInUser({ email: values.email, password: values.password }, navigate)
+        signIn({ email: values.email, password: values.password }, navigate)
       );
     }
   };

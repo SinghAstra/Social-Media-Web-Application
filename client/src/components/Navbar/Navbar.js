@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
-import { logOutUser } from "../../actions/auth";
+import { logOut } from "../../actions/auth";
 import { jwtDecode } from "jwt-decode";
 import {
   Avatar,
@@ -70,7 +70,7 @@ const Navbar = () => {
     if (token) {
       const decodedToken = jwtDecode(token);
       if (decodedToken.exp * 1000 < new Date().getTime()) {
-        dispatch(logOutUser(setUser));
+        dispatch(logOut(setUser));
       }
     }
     setUser(JSON.parse(localStorage.getItem("user")));
@@ -109,7 +109,7 @@ const Navbar = () => {
         </MenuItem>
         <MenuItem
           onClick={() => {
-            dispatch(logOutUser(setUser));
+            dispatch(logOut(setUser));
             handleClose();
           }}
         >

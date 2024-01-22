@@ -6,7 +6,9 @@ import { TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as Yup from "yup";
 
+// Define the functional component
 const Auth = () => {
+  // Initial form values
   const initialValues = {
     firstName: "",
     lastName: "",
@@ -15,14 +17,19 @@ const Auth = () => {
     confirmPassword: "",
   };
 
+  // State for toggling between sign up and sign in
   const [isSignUp, setIsSignUp] = useState(true);
+
+  // Redux dispatch and navigation hook
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Toggle between sign up and sign in
   const toggleSignUp = () => {
     setIsSignUp(!isSignUp);
   };
 
+  // Define Yup validation schema for sign up
   const signUpValidationSchema = Yup.object().shape({
     firstName: Yup.string().required("Required"),
     lastName: Yup.string().required("Required"),
@@ -33,11 +40,13 @@ const Auth = () => {
       .required("Required"),
   });
 
+  // Define Yup validation schema for sign in
   const signInValidationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email address").required("Required"),
     password: Yup.string().required("Required"),
   });
 
+  // Function to render form fields
   const renderFormFields = (
     values,
     handleChange,
@@ -49,6 +58,7 @@ const Auth = () => {
       <>
         {isSignUp && (
           <>
+            {/* First Name Field */}
             <TextField
               size="small"
               fullWidth
@@ -64,6 +74,7 @@ const Auth = () => {
                 errors.firstName && touched.firstName && errors.firstName
               }
             />
+            {/* Last Name Field */}
             <TextField
               size="small"
               fullWidth
@@ -81,6 +92,7 @@ const Auth = () => {
             />
           </>
         )}
+        {/* Email Field */}
         <TextField
           size="small"
           fullWidth
@@ -94,6 +106,7 @@ const Auth = () => {
           error={errors.email && touched.email}
           helperText={errors.email && touched.email && errors.email}
         />
+        {/* Password Field */}
         <TextField
           size="small"
           fullWidth
@@ -108,6 +121,7 @@ const Auth = () => {
           helperText={errors.password && touched.password && errors.password}
         />
         {isSignUp && (
+          // Confirm Password Field for Sign Up
           <TextField
             size="small"
             fullWidth
@@ -130,9 +144,11 @@ const Auth = () => {
     );
   };
 
+  // Function to handle form submission
   const onSubmit = (values, { setSubmitting }) => {
     setSubmitting(true);
 
+    // Dispatch appropriate action based on sign up or sign in
     if (isSignUp) {
       dispatch(signUp(values, navigate));
     } else {
@@ -142,12 +158,15 @@ const Auth = () => {
     }
   };
 
+  // Render the component
   return (
-    <div className="flex flex-col bg-white items-center justify-center px-3 py-8 mx-auto w-80  rounded-lg shadow">
+    <div className="flex flex-col bg-white items-center justify-center px-3 py-8 mx-auto w-80 rounded-lg shadow">
       <div>
-        <h1 className="text-xl  font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl text-center mb-2">
+        {/* Sign Up/Sign In Heading */}
+        <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl text-center mb-2">
           {isSignUp ? "Sign Up" : "Sign In"}
         </h1>
+        {/* Formik form for handling form state and validation */}
         <Formik
           initialValues={initialValues}
           validationSchema={
@@ -166,6 +185,7 @@ const Auth = () => {
             } = props;
             return (
               <form className="space-y-3" onSubmit={handleSubmit}>
+                {/* Render form fields */}
                 {renderFormFields(
                   values,
                   handleChange,
@@ -173,6 +193,7 @@ const Auth = () => {
                   touched,
                   errors
                 )}
+                {/* Submit Button */}
                 <button
                   type="submit"
                   className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
@@ -183,7 +204,7 @@ const Auth = () => {
             );
           }}
         </Formik>
-
+        {/* Toggle Sign Up/Sign In Button */}
         <button
           onClick={toggleSignUp}
           className="w-full text-white bg-blue-500 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-md text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 mt-2"
@@ -197,4 +218,5 @@ const Auth = () => {
   );
 };
 
+// Export the component
 export default Auth;

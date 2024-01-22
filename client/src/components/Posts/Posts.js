@@ -1,7 +1,8 @@
 import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
-import { CircularProgress, Grid } from "@mui/material";
+import LoadingPostSkelton from "./Post/LoadingPostSkelton";
+import { Grid } from "@mui/material";
 
 const Posts = ({ setCurrentId }) => {
   const isLoadingPosts = useSelector((state) => state.loadingPosts);
@@ -12,13 +13,12 @@ const Posts = ({ setCurrentId }) => {
 
   if (isLoadingPosts) {
     return (
-      <Grid
-        container
-        justifyContent="center"
-        alignItems="center"
-        style={{ height: "100vh" }}
-      >
-        <CircularProgress />
+      <Grid container spacing={1} alignItems="stretch" sx={{ padding: "8px" }}>
+        {Array.from({ length: 8 }).map((_, index) => (
+          <Grid item xs={12} sm={6} md={4} xl={3}>
+            <LoadingPostSkelton key={index} />
+          </Grid>
+        ))}
       </Grid>
     );
   }

@@ -10,11 +10,12 @@ import Notification from "./components/Notification/Notification";
 import { hideNotification } from "./actions/notifications";
 
 function App() {
-  const user = useSelector((state) => state.auth.authState);
-  const dispatch = useDispatch();
   const { open, message, severity } = useSelector(
     (state) => state.notification
   );
+
+  const user = useSelector((state) => state.auth.authState);
+  const dispatch = useDispatch();
   const handleCloseNotification = () => {
     dispatch(hideNotification());
   };
@@ -35,7 +36,9 @@ function App() {
       </Routes>
       <Notification
         open={open}
-        onClose={handleCloseNotification}
+        onClose={() => {
+          handleCloseNotification();
+        }}
         message={message}
         severity={severity}
       />

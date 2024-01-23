@@ -20,9 +20,10 @@ const {
 export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
+      dispatch(showNotification("Creating Post", "info"));
       const { data } = await createPostApi(formDataObject);
-      console.log("data --createPostApi ", data);
       dispatch({ type: CREATE_POST, payload: data.post });
+      dispatch(showNotification(data.message, "success"));
     } catch (error) {
       console.log("error.response.data is ", error.response.data);
       console.log(
@@ -77,8 +78,10 @@ export const fetchPostBySearch = (searchQuery) => {
 export const updatePost = (updatedFormData, currentId) => {
   return async function (dispatch) {
     try {
+      dispatch(showNotification("Updating Post", "info"));
       const { data } = await updatePostApi(currentId, updatedFormData);
       dispatch({ type: UPDATE_POST, payload: data.data });
+      dispatch(showNotification(data.message, "success"));
     } catch (error) {
       console.log(error);
     }
@@ -88,8 +91,10 @@ export const updatePost = (updatedFormData, currentId) => {
 export const deletePost = (id) => {
   return async function (dispatch) {
     try {
-      await deletePostApi(id);
+      dispatch(showNotification("Deleting Post", "info"));
+      const { data } = await deletePostApi(id);
       dispatch({ type: DELETE_POST, payload: id });
+      dispatch(showNotification(data.message, "success"));
     } catch (error) {
       console.log(error);
     }
@@ -100,6 +105,7 @@ export const likePost = (id) => {
     try {
       const { data } = await likePostApi(id);
       dispatch({ type: LIKE_POST, payload: data.data });
+      dispatch(showNotification(data.message, "info"));
     } catch (error) {
       console.log(error);
     }

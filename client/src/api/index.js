@@ -23,13 +23,7 @@ export const getPostBySearchApi = (searchQuery) => {
 };
 
 export const updatePostApi = (id, updatedFormData) => {
-  const formDataObject = {
-    title: updatedFormData.get("title"),
-    message: updatedFormData.get("message"),
-    tags: updatedFormData.getAll("tags"),
-    selectedFile: updatedFormData.get("selectedFile"),
-  };
-  return API.put(`/post/${id}`, formDataObject);
+  return API.put(`/post/${id}`, updatedFormData);
 };
 
 export const deletePostApi = (id) => API.delete(`/post/${id}`);

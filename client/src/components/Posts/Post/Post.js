@@ -19,6 +19,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { showNotification } from "../../../actions/notifications";
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ const Post = ({ post, setCurrentId }) => {
     if (isLoggedIn) {
       dispatch(likePost(id));
     } else {
-      console.log("Please Sign In Order to like other posts.");
+      dispatch(showNotification("Please sign in to like the post", "info"));
     }
   };
 

@@ -8,6 +8,7 @@ import styled from "@emotion/styled";
 import * as Yup from "yup";
 import { Formik } from "formik";
 
+// Styled component for visually hidden input
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -20,29 +21,70 @@ const VisuallyHiddenInput = styled("input")({
   width: 1,
 });
 
-export default function Form({ currentId, setCurrentId }) {
-  const user = useSelector((state) => state.auth.authState);
+// Yup validation schema for form fields
+const postValidationSchema = Yup.object().shape({
+  title: Yup.string().required("Required"),
+  message: Yup.string().required("Required"),
+  tags: Yup.array().min(1, "At least one tag is required"),
+  selectedFile: Yup.mixed().required("Image is required"),
+});
 
+// FileInput component for handling file uploads
+const FileInput = ({
+  setFieldValue,
+  selectedFileName,
+  setSelectedFileName,
+}) => {
+  return (
+    <Button
+      component="label"
+      variant="contained"
+      sx={{ width: "100%" }}
+      startIcon={<CloudUploadIcon />}
+      onChange={(e) => {
+        setSelectedFileName(e.target.files[0]?.name || "");
+        setFieldValue("selectedFile", e.target.files[0]);
+      }}
+    >
+      {selectedFileName ? `File Selected: ${selectedFileName}` : "Upload Image"}
+      <VisuallyHiddenInput type="file" name="selectedFile" />
+    </Button>
+  );
+};
+
+// Component for displaying a message to unauthorized users
+const UnauthorizedUserMessage = () => {
+  return (
+    <div className="w-72 lg:w-64 bg-white shadow-md rounded h-fit font-semibold text-left p-6">
+      <h1>Please Sign In in order to create your post and like other posts.</h1>
+    </div>
+  );
+};
+
+// Main Form component
+export default function Form({ currentId, setCurrentId }) {
+  // Retrieve user and posts data from Redux store
+  const user = useSelector((state) => state.auth.authState);
+  const posts = useSelector((state) => state.posts.posts);
+
+  // State for tracking selected file name
   const [selectedFileName, setSelectedFileName] = useState("");
 
-  const [formData, setFormData] = useState({
+  // Initial form data
+  const initialFormData = {
     title: "",
     message: "",
     tags: [],
     selectedFile: "",
-  });
+  };
 
+  // State to manage form data
+  const [formData, setFormData] = useState(initialFormData);
+
+  // Redux dispatch function
   const dispatch = useDispatch();
 
-  const posts = useSelector((state) => state.posts.posts);
-
-  const postValidationSchema = Yup.object().shape({
-    title: Yup.string().required("Required"),
-    message: Yup.string().required("Required"),
-    tags: Yup.array().min(1, "At least one tag is required"),
-    selectedFile: Yup.mixed().required("Image is required"),
-  });
-
+  // Form submit handler
   const handleFormSubmit = (values, { resetForm }) => {
     const formDataObject = new FormData();
     formDataObject.append("title", values.title);
@@ -58,10 +100,12 @@ export default function Form({ currentId, setCurrentId }) {
     } else {
       dispatch(createPost(formDataObject));
     }
-    // resetForm();
-    // setSelectedFileName("");
+    setFormData(initialFormData);
+    resetForm();
+    setSelectedFileName("");
   };
 
+  // Effect to populate form data when currentId changes
   useEffect(() => {
     if (currentId) {
       const currentPost = posts.find((post) => post._id === currentId);
@@ -69,30 +113,12 @@ export default function Form({ currentId, setCurrentId }) {
     }
   }, [currentId, posts]);
 
-  const handleAddTag = (tag) => {
-    setFormData({
-      ...formData,
-      tags: [...formData.tags, tag],
-    });
-  };
-
-  const handleDeleteTag = (tagToDelete) => {
-    setFormData({
-      ...formData,
-      tags: formData.tags.filter((tag) => tag !== tagToDelete),
-    });
-  };
-
+  // If user is not authenticated, display a message
   if (!user) {
-    return (
-      <div className="w-72 lg:w-64 bg-white shadow-md rounded h-fit font-semibold text-left p-6">
-        <h1>
-          Please Sign In in order to create your post and like other posts.
-        </h1>
-      </div>
-    );
+    return <UnauthorizedUserMessage />;
   }
 
+  // Main JSX for the form
   return (
     <div>
       <div className="w-72 lg:w-64  bg-white shadow-lg rounded p-2">
@@ -162,21 +188,11 @@ export default function Form({ currentId, setCurrentId }) {
                   disableEdition
                   disableDeleteOnBackspace
                 />
-                <Button
-                  component="label"
-                  variant="contained"
-                  sx={{ width: "100%" }}
-                  startIcon={<CloudUploadIcon />}
-                  onChange={(e) => {
-                    setSelectedFileName(e.target.files[0]?.name || "");
-                    setFieldValue("selectedFile", e.target.files[0]);
-                  }}
-                >
-                  {selectedFileName
-                    ? `File Selected: ${selectedFileName}`
-                    : "Upload Image"}
-                  <VisuallyHiddenInput type="file" name="selectedFile" />
-                </Button>
+                <FileInput
+                  setSelectedFileName={setSelectedFileName}
+                  selectedFileName={selectedFileName}
+                  setFieldValue={setFieldValue}
+                />
                 {errors.selectedFile && touched.selectedFile && (
                   <div className="text-red-500 pl-2">{errors.selectedFile}</div>
                 )}

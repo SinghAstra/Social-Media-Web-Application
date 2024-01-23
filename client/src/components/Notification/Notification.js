@@ -8,7 +8,6 @@ const Notification = ({ open, onClose, message, severity }) => {
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
       onClose={onClose}
       TransitionComponent={SlideTransition}
       anchorOrigin={{ vertical: "bottom", horizontal: "center" }}

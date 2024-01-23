@@ -58,7 +58,7 @@ const createPost = async (req, res) => {
     await post.save();
 
     res.status(201).json({
-      message: "Success",
+      message: "Post Created Successfully.",
       selectedFile: result.secure_url,
       post,
     });
@@ -82,17 +82,30 @@ const updatePost = async (req, res) => {
       return res.status(400).json({ message: "UnAuthenticated" });
     }
 
-    const { title, message, name, tags, selectedFile } = req.body;
+    const { title, message, name, tags } = req.body;
 
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
+    // Conditionally update Cloudinary image only if req.file is present
+    if (req.file) {
+      // Delete the existing Cloudinary image
+      await cloudinary.uploader.destroy(post.cloudinary_id);
 
-      { title, message, creator: req.userId, tags, name, selectedFile },
+      // Upload a new image to Cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path);
 
-      { new: true }
-    );
+      // Update the post with the new Cloudinary details
+      post.selectedFile = result.secure_url;
+      post.cloudinary_id = result.public_id;
+    }
 
-    res.status(201).json({ data: updatedPost });
+    // Update other fields in the post
+    post.title = title;
+    post.message = message;
+    post.name = name;
+    post.tags = tags;
+
+    await post.save();
+
+    res.status(201).json({ data: post, message: "Post has been Updated." });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -122,7 +135,7 @@ const likePost = async (req, res) => {
 
     const updatedPost = await Post.findByIdAndUpdate(id, post, { new: true });
 
-    res.status(201).json({ data: updatedPost });
+    res.status(201).json({ data: updatedPost, message: "You Liked the Post." });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -142,9 +155,11 @@ const deletePost = async (req, res) => {
       return res.status(400).json({ message: "UnAuthenticated" });
     }
 
+    await cloudinary.uploader.destroy(post.cloudinary_id);
+
     await Post.findByIdAndDelete(id);
 
-    res.status(201).json({ data: "Deleted Successfully." });
+    res.status(201).json({ message: "Deleted Successfully." });
   } catch (error) {
     res.status(500).json({ message: error });
   }

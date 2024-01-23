@@ -13,7 +13,7 @@ const processFile = require("../utils/multer");
 router.get("/", getPosts);
 router.get("/search", getPosts);
 router.post("/", authMiddleware, processFile, createPost);
-router.put("/:id", authMiddleware, updatePost);
+router.put("/:id", authMiddleware, processFile, updatePost);
 router.delete("/:id", authMiddleware, deletePost);
 router.put("/:id/likePost", authMiddleware, likePost);
 

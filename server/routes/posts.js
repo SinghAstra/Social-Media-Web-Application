@@ -8,7 +8,7 @@ const {
   likePost,
 } = require("../controllers/posts");
 const authMiddleware = require("../middleware/auth");
-const processFile = require("../processFile");
+const processFile = require("../utils/multer");
 
 router.get("/", getPosts);
 router.get("/search", getPosts);

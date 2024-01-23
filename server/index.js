@@ -1,11 +1,11 @@
 const bodyParser = require("body-parser");
 const express = require("express");
 const app = express();
-const postRoutes = require("./routes/posts");
-const userRoutes = require("./routes/user");
 const cors = require("cors");
 const { default: mongoose } = require("mongoose");
 require("dotenv").config();
+const postRoutes = require("./routes/posts");
+const userRoutes = require("./routes/user");
 
 const CONNECTION_URL = process.env.CONNECTION_URL;
 
@@ -21,7 +21,7 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-app.use("/files", express.static("upload"));
+
 app.use("/post", postRoutes);
 app.use("/user", userRoutes);
 

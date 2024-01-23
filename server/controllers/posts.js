@@ -1,5 +1,6 @@
 const Post = require("../models/post");
 const mongoose = require("mongoose");
+const cloudinary = require("../utils/cloudinary");
 
 const getPosts = async (req, res) => {
   try {
@@ -38,8 +39,10 @@ const createPost = async (req, res) => {
     if (!req.userId) {
       return res.status(400).json({ message: "UnAuthenticated" });
     }
-    const url = req.protocol + "://" + req.get("host");
-    const file = url + "/files/" + req.file.filename;
+    console.log("req.file.path is ", req.file.path);
+    const result = await cloudinary.uploader.upload(req.file.path);
+    console.log("result is ", result);
+
     const { title, message, tags, name } = req.body;
 
     const post = await Post.create({
@@ -48,15 +51,19 @@ const createPost = async (req, res) => {
       creator: req.userId,
       tags,
       name,
-      selectedFile: file,
+      selectedFile: result.secure_url,
+      cloudinary_id: result.public_id,
     });
+
     await post.save();
+
     res.status(201).json({
       message: "Success",
-      selectedFile: file,
+      selectedFile: result.secure_url,
       post,
     });
   } catch (error) {
+    console.log("error is ", error);
     res.status(500).json({ message: error });
   }
 };

@@ -12,6 +12,9 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  cloudinary_id: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("User", userSchema);

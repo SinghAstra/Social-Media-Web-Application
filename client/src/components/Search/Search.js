@@ -11,14 +11,17 @@ const Search = ({ initialSearch }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // Handle adding a tag to the list
   const handleAddTag = (tag) => {
     setTags([...tags, tag]);
   };
 
+  // Handle deleting a tag from the list
   const handleDeleteTag = (tagToDelete) => {
     setTags(tags.filter((tag) => tag !== tagToDelete));
   };
 
+  // Handle searching for posts based on title and tags
   const handleSearchPost = () => {
     if (title.trim() || tags.length > 0) {
       dispatch(fetchPostBySearch({ search: title, tags: tags.join(",") }));
@@ -32,6 +35,7 @@ const Search = ({ initialSearch }) => {
     }
   };
 
+  // Initialize component state based on the URL search parameters
   useEffect(() => {
     const searchParams = new URLSearchParams(initialSearch);
     const initialTitleValue = searchParams.get("search");

@@ -36,6 +36,9 @@ const postSchema = new mongoose.Schema({
     type: Date,
     default: new Date(),
   },
+  cloudinary_id: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Post", postSchema);

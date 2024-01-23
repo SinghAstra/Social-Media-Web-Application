@@ -6,6 +6,7 @@ import {
   likePostApi,
   updatePostApi,
 } from "../api";
+import { showNotification } from "./notifications";
 const {
   CREATE_POST,
   FETCH_ALL_POST,
@@ -20,9 +21,15 @@ export const createPost = (formDataObject) => {
   return async function (dispatch) {
     try {
       const { data } = await createPostApi(formDataObject);
+      console.log("data --createPostApi ", data);
       dispatch({ type: CREATE_POST, payload: data.post });
     } catch (error) {
-      console.log(error);
+      console.log("error.response.data is ", error.response.data);
+      console.log(
+        "error.response.data.message is ",
+        error.response.data.message
+      );
+      // dispatch(showNotification(error.response.data.message, "error"));
     }
   };
 };

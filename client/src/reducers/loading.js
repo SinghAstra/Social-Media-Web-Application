@@ -1,10 +1,10 @@
-import { END_LOADING_POSTS, START_LOADING_POSTS } from "../actions/actionTypes";
+import { END_LOADING, START_LOADING } from "../actions/actionTypes";
 
 export const loadingReducer = (state = false, action) => {
   switch (action.type) {
-    case START_LOADING_POSTS:
+    case START_LOADING:
       return true;
-    case END_LOADING_POSTS:
+    case END_LOADING:
       return false;
     default:
       return state;

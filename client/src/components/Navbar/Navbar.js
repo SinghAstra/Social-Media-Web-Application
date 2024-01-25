@@ -102,13 +102,6 @@ const Navbar = () => {
       >
         <MenuItem
           onClick={() => {
-            handleClose();
-          }}
-        >
-          Profile
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
             dispatch(logOut(setUser));
             handleClose();
           }}

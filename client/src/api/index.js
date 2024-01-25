@@ -16,6 +16,8 @@ export const createPostApi = (formDataObject) => {
   return API.post(`/post`, formDataObject);
 };
 
+export const getPostById = (id) => API.get(`/post/${id}`);
+
 export const getAllPostApi = (page) => API.get(`/post`, { params: { page } });
 
 export const getPostBySearchApi = (searchQuery) => {

@@ -2,6 +2,7 @@ import {
   createPostApi,
   deletePostApi,
   getAllPostApi,
+  getPostById,
   getPostBySearchApi,
   likePostApi,
   updatePostApi,
@@ -13,9 +14,23 @@ const {
   UPDATE_POST,
   DELETE_POST,
   LIKE_POST,
-  START_LOADING_POSTS,
-  END_LOADING_POSTS,
+  START_LOADING,
+  END_LOADING,
+  FETCH_POST,
 } = require("./actionTypes");
+
+export const getPost = (id) => {
+  return async function (dispatch) {
+    try {
+      dispatch({ type: START_LOADING });
+      const { data } = await getPostById(id);
+      console.log("data.post in getPost is ", data.post);
+      dispatch({ type: FETCH_POST, payload: { post: data.post } });
+    } catch (error) {
+      console.log("error.message is ", error.message);
+    }
+  };
+};
 
 export const createPost = (formDataObject) => {
   return async function (dispatch) {
@@ -38,7 +53,7 @@ export const createPost = (formDataObject) => {
 export const fetchAllPost = (page) => {
   return async function (dispatch) {
     try {
-      dispatch({ type: START_LOADING_POSTS });
+      dispatch({ type: START_LOADING });
       const { data } = await getAllPostApi(page);
       dispatch({
         type: FETCH_ALL_POST,
@@ -48,7 +63,7 @@ export const fetchAllPost = (page) => {
           numberOfPages: data.totalPages,
         },
       });
-      dispatch({ type: END_LOADING_POSTS });
+      dispatch({ type: END_LOADING });
     } catch (error) {
       console.log(error);
     }
@@ -58,7 +73,7 @@ export const fetchAllPost = (page) => {
 export const fetchPostBySearch = (searchQuery) => {
   return async function (dispatch) {
     try {
-      dispatch({ type: START_LOADING_POSTS });
+      dispatch({ type: START_LOADING });
       const { data } = await getPostBySearchApi(searchQuery);
       dispatch({
         type: FETCH_ALL_POST,
@@ -68,7 +83,7 @@ export const fetchPostBySearch = (searchQuery) => {
           numberOfPages: data.totalPages,
         },
       });
-      dispatch({ type: END_LOADING_POSTS });
+      dispatch({ type: END_LOADING });
     } catch (error) {
       console.log(error);
     }

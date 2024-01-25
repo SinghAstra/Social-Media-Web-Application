@@ -3,6 +3,7 @@ import {
   Avatar,
   Button,
   Card,
+  CardActionArea,
   CardActions,
   CardContent,
   CardHeader,
@@ -20,6 +21,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { showNotification } from "../../../actions/notifications";
+import { Link } from "react-router-dom";
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
@@ -71,55 +73,57 @@ const Post = ({ post, setCurrentId }) => {
         title={post.title}
         subheader={moment(post.createdAt).fromNow()}
       />
-      <CardMedia
-        sx={{ height: 240 }}
-        image={post.selectedFile}
-        title={post.title}
-      />
-      <CardContent>
-        <Typography variant="body2" color="textSecondary">
-          {post.message}
-        </Typography>
-        {post.tags?.length > 0 && (
-          <Stack mt={2} spacing={1} direction={"row"}>
-            {post.tags.map((tag, index) => (
-              <Chip
-                label={`#${tag} `}
-                color="primary"
-                sx={{ fontFamily: "monospace" }}
-                key={index}
-              />
-            ))}
-          </Stack>
-        )}
-      </CardContent>
-      <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
-        <Button
-          onClick={() => handleLikePost(post._id)}
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {hasLiked ? (
-            <ThumbUpIcon fontSize="small" color="primary" />
-          ) : (
-            <ThumbUpOutlinedIcon fontSize="small" color="primary" />
+      <CardActionArea component={Link} to={`/posts/${post._id}`}>
+        <CardMedia
+          sx={{ height: 240 }}
+          image={post.selectedFile}
+          title={post.title}
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary">
+            {post.message}
+          </Typography>
+          {post.tags?.length > 0 && (
+            <Stack mt={2} spacing={1} direction={"row"}>
+              {post.tags.map((tag, index) => (
+                <Chip
+                  label={`#${tag} `}
+                  color="primary"
+                  sx={{ fontFamily: "monospace" }}
+                  key={index}
+                />
+              ))}
+            </Stack>
           )}
-          <Typography variant="body2">{post.likes.length}</Typography>
-        </Button>
-        {isCreator && (
+        </CardContent>
+        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
           <Button
-            size="small"
-            color="primary"
-            onClick={() => handleDeletePost(post._id)}
+            onClick={() => handleLikePost(post._id)}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
           >
-            <DeleteIcon fontSize="small" />
+            {hasLiked ? (
+              <ThumbUpIcon fontSize="small" color="primary" />
+            ) : (
+              <ThumbUpOutlinedIcon fontSize="small" color="primary" />
+            )}
+            <Typography variant="body2">{post.likes.length}</Typography>
           </Button>
-        )}
-      </CardActions>
+          {isCreator && (
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => handleDeletePost(post._id)}
+            >
+              <DeleteIcon fontSize="small" />
+            </Button>
+          )}
+        </CardActions>
+      </CardActionArea>
     </Card>
   );
 };

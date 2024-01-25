@@ -34,14 +34,26 @@ const getPosts = async (req, res) => {
   }
 };
 
+const getPostById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Post.findById(id);
+    console.log("post is ", post);
+    if (!post) {
+      return res.status(500).json({ message: "No Such Post Found!" });
+    }
+    return res.json({ post });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+};
+
 const createPost = async (req, res) => {
   try {
     if (!req.userId) {
       return res.status(400).json({ message: "UnAuthenticated" });
     }
-    console.log("req.file.path is ", req.file.path);
     const result = await cloudinary.uploader.upload(req.file.path);
-    console.log("result is ", result);
 
     const { title, message, tags, name } = req.body;
 
@@ -167,6 +179,7 @@ const deletePost = async (req, res) => {
 
 module.exports = {
   getPosts,
+  getPostById,
   createPost,
   updatePost,
   deletePost,

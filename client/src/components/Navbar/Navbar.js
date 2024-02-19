@@ -58,7 +58,9 @@ const Navbar = () => {
     } else {
       return (
         <Link to="/auth">
-          <Button variant="outlined">Sign In</Button>
+          <Button variant="outlined" component={Link} to="/auth">
+            Sign In
+          </Button>
         </Link>
       );
     }

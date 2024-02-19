@@ -13,12 +13,12 @@ function App() {
   const { open, message, severity } = useSelector(
     (state) => state.notification
   );
-
-  const user = useSelector((state) => state.auth.authState);
-  const dispatch = useDispatch();
   const handleCloseNotification = () => {
     dispatch(hideNotification());
   };
+
+  const user = useSelector((state) => state.auth.authState);
+  const dispatch = useDispatch();
 
   return (
     <ThemeProvider theme={theme}>

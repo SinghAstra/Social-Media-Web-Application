@@ -28,15 +28,13 @@ const Posts = ({ setCurrentId }) => {
 
   // Render actual posts once loading is complete
   return (
-    <Grid container alignItems="stretch" spacing={1} sx={{ padding: 2 }}>
+    <div className="flex flex-col bg-green-400 w-full items-center">
       {/* Map through the posts and render each post component */}
       {posts &&
         posts.map((post) => (
-          <Grid item key={post._id} xs={12} sm={6} md={4} xl={3}>
-            <Post post={post} setCurrentId={setCurrentId} />
-          </Grid>
+          <Post post={post} setCurrentId={setCurrentId} key={post._id} />
         ))}
-    </Grid>
+    </div>
   );
 };
 

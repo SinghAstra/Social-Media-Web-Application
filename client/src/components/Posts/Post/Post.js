@@ -37,7 +37,7 @@ const Post = ({ post, setCurrentId }) => {
   const isCreator = isLoggedIn && String(post.creator) === user._id;
 
   return (
-    <div className="max-w-md bg-yellow-400 w-full rounded-md m-2 shadow-md shadow-black py-2 px-4">
+    <div className="max-w-md w-full rounded-md my-4 shadow-md shadow-black py-2 px-4">
       <div className="flex justify-between items-center relative">
         <h1 className="text-xl font-medium">{post.title}</h1>
         <button className="text-black text-xl">

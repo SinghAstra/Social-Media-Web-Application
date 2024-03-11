@@ -28,7 +28,7 @@ const Posts = ({ setCurrentId }) => {
 
   // Render actual posts once loading is complete
   return (
-    <div className="flex flex-col bg-green-400 w-full items-center">
+    <div className="flex flex-col w-full items-center">
       {/* Map through the posts and render each post component */}
       {posts &&
         posts.map((post) => (

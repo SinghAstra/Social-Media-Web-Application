@@ -4,9 +4,10 @@ import Navbar from "./components/Navbar/Navbar";
 import PostDetails from "./components/PostDetails/PostDetails";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme";
 import Notification from "./components/Notification/Notification";
 import { hideNotification } from "./actions/notifications";
-import Profile from "./pages/Profile";
 
 function App() {
   const { open, message, severity } = useSelector(
@@ -20,14 +21,13 @@ function App() {
   const dispatch = useDispatch();
 
   return (
-    <div className="font-mono">
+    <ThemeProvider theme={theme}>
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Navigate to="/posts" />} />
         <Route exact path="/posts" element={<Home />} />
         <Route exact path="/posts/search" element={<Home />} />
         <Route exact path="/posts/:id" element={<PostDetails />} />
-        <Route exact path="/profile" element={<Profile />} />
         <Route
           exact
           path="/auth"
@@ -42,7 +42,7 @@ function App() {
         message={message}
         severity={severity}
       />
-    </div>
+    </ThemeProvider>
   );
 }
 

@@ -3,6 +3,14 @@ import { useDispatch } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { logOut } from "../../actions/auth";
 import { jwtDecode } from "jwt-decode";
+import {
+  Avatar,
+  Button,
+  Menu,
+  MenuItem,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 
 /**
  * The Navbar component represents the application's navigation bar,
@@ -16,8 +24,47 @@ const Navbar = () => {
   // State to manage user data
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
 
+  // State to manage anchor element for the user popover
+  const [anchorEl, setAnchorEl] = useState(null);
+
   // Redux dispatch function
   const dispatch = useDispatch();
+
+  // Event handler for opening the user popover
+  const handleUserPopOver = (e) => {
+    setAnchorEl(e.currentTarget);
+  };
+
+  // Event handler for closing the user popover
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  // Boolean value indicating whether the user popover is open
+  const open = Boolean(anchorEl);
+
+  // Function to render the avatar or sign-in button based on user authentication status
+  const renderAvatar = () => {
+    if (user) {
+      return (
+        <Avatar
+          alt="user"
+          sx={{ cursor: "pointer", backgroundColor: "red" }}
+          onClick={handleUserPopOver}
+        >
+          {user.name[0]}
+        </Avatar>
+      );
+    } else {
+      return (
+        <Link to="/auth">
+          <Button variant="outlined" component={Link} to="/auth">
+            Sign In
+          </Button>
+        </Link>
+      );
+    }
+  };
 
   // Effect to check and handle user token expiration
   useEffect(() => {
@@ -33,18 +80,38 @@ const Navbar = () => {
 
   // Main rendering logic for the Navbar component
   return (
-    <div className="bg-black text-white flex justify-between items-center py-3 px-5">
-      <h1 className="text-2xl">Social Media Application</h1>
-      {user ? (
-        <div className="w-10 h-10 rounded-full cursor-pointer shadow-lg bg-white text-black flex items-center justify-center font-extrabold text-2xl border border-white">
-          <Link to="/profile">{user.name[0]}</Link>
-        </div>
-      ) : (
-        <button className="bg-transparent py-2 px-4 rounded-md border-white border hover:text-black hover:bg-white hover:font-bold">
-          <Link to={"/auth"}>Sign In </Link>
-        </button>
-      )}
-    </div>
+    <Toolbar
+      sx={{
+        margin: "8px",
+        boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
+        borderRadius: "8px",
+      }}
+    >
+      <Typography variant="h4" sx={{ flex: 1 }} component={Link} to={"/posts"}>
+        Social Media Application
+      </Typography>
+      {renderAvatar()}
+      {/* User popover menu */}
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            dispatch(logOut(setUser));
+            handleClose();
+          }}
+        >
+          Log Out
+        </MenuItem>
+      </Menu>
+    </Toolbar>
   );
 };
 

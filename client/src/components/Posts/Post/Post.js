@@ -1,22 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
+import {
+  Avatar,
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
+  Chip,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { deletePost, likePost } from "../../../actions/post";
-import { FaEllipsisVertical } from "react-icons/fa6";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { showNotification } from "../../../actions/notifications";
 import { Link } from "react-router-dom";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
 
 const Post = ({ post, setCurrentId }) => {
   const dispatch = useDispatch();
 
   const user = useSelector((state) => state.auth.authState);
-
-  const [showDropdown, setShowDropdown] = useState(false);
-
-  const handleToggleDropDown = () => {
-    setShowDropdown(!showDropdown);
-  };
 
   const handleDeletePost = (id) => {
     dispatch(deletePost(id));
@@ -36,79 +46,85 @@ const Post = ({ post, setCurrentId }) => {
 
   const isCreator = isLoggedIn && String(post.creator) === user._id;
 
-  return (
-    <div className="max-w-md w-full rounded-md my-4 shadow-md shadow-black py-2 px-4">
-      <div className="flex justify-between items-center relative">
-        <h1 className="text-xl font-medium">{post.title}</h1>
-        <button className="text-black text-xl">
-          <FaEllipsisVertical onClick={handleToggleDropDown} />
-        </button>
-        <div
-          className={`bg-slate-800 cursor-pointer rounded-md text-white absolute top-6 right-1 shadow-md z-10 border border-gray-400  ${
-            !showDropdown && "hidden"
-          }`}
-        >
-          <ul className="divide-y divide-gray-500">
-            {isCreator && (
-              <li
-                className="px-4 py-2 hover:bg-slate-600"
-                onClick={() => setCurrentId(post._id)}
-              >
-                Edit
-              </li>
-            )}
-            {isCreator && (
-              <li
-                className="px-4 py-2  hover:bg-slate-600"
-                onClick={() => dispatch(handleDeletePost(post._id))}
-              >
-                Delete
-              </li>
-            )}
-            <li className="px-4 py-2  hover:bg-slate-600">Save</li>
-          </ul>
-        </div>
-      </div>
-      <div className="flex items-center justify-center relative">
-        <img
-          src={post.selectedFile}
-          alt={post.title}
-          onClick={() => handleLikePost(post._id)}
-          className="cursor-pointer"
-        />
-        <div className="p-2 text-2xl absolute bottom-0 left-0">
-          {hasLiked ? (
-            <FaHeart
-              className="cursor-pointer text-red-400"
-              onClick={() => handleLikePost(post._id)}
-            />
-          ) : (
-            <FaRegHeart
-              className="cursor-pointer text-white"
-              onClick={() => handleLikePost(post._id)}
-            />
-          )}
-        </div>
-      </div>
+  const maxLength = 197;
 
-      <div className="flex justify-start items-center gap-2 mt-2">
-        <div className="w-10 h-10 rounded-full cursor-pointer shadow-lg bg-white text-black flex items-center justify-center font-extrabold text-2xl border border-white">
-          <Link to="/profile">{post.name[0]}</Link>
-        </div>
-        <div>
-          <h1>{post.name}</h1>
-          <p className="text-slate-400 text-sm">
-            {moment(post.createdAt).fromNow()}
-          </p>
-        </div>
-      </div>
-      <div className="mt-2">
-        <p className="text-slate-600">{post.message}</p>
-        {post.tags.map((tag) => (
-          <span className="text-slate-500 mx-1">#{tag}</span>
-        ))}
-      </div>
-    </div>
+  if (post.message.length > maxLength) {
+    post.message = post.message.substring(0, maxLength) + "...";
+  }
+
+  return (
+    <Card sx={{ maxWidth: 345 }}>
+      <CardHeader
+        avatar={
+          <Avatar sx={{ backgroundColor: "red" }} aria-label="creator">
+            {post.name[0]}
+          </Avatar>
+        }
+        action={
+          isCreator && (
+            <IconButton
+              aria-label="edit"
+              onClick={() => setCurrentId(post._id)}
+            >
+              <MoreVertIcon />
+            </IconButton>
+          )
+        }
+        title={post.title}
+        subheader={moment(post.createdAt).fromNow()}
+      />
+      <CardActionArea component={Link} to={`/posts/${post._id}`}>
+        <CardMedia
+          sx={{ height: 240 }}
+          image={post.selectedFile}
+          title={post.title}
+        />
+        <CardContent>
+          <Typography variant="body2" color="textSecondary">
+            {post.message}
+          </Typography>
+          {post.tags?.length > 0 && (
+            <Stack mt={2} spacing={1} direction={"row"}>
+              {post.tags.map((tag, index) => (
+                <Chip
+                  label={`#${tag} `}
+                  color="primary"
+                  sx={{ fontFamily: "monospace" }}
+                  key={index}
+                />
+              ))}
+            </Stack>
+          )}
+        </CardContent>
+        <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Button
+            onClick={() => handleLikePost(post._id)}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            {hasLiked ? (
+              <ThumbUpIcon fontSize="small" color="primary" />
+            ) : (
+              <ThumbUpOutlinedIcon fontSize="small" color="primary" />
+            )}
+            <Typography variant="body2">{post.likes.length}</Typography>
+          </Button>
+          {isCreator && (
+            <Button
+              size="small"
+              color="primary"
+              onClick={() => handleDeletePost(post._id)}
+            >
+              <DeleteIcon fontSize="small" />
+            </Button>
+          )}
+        </CardActions>
+      </CardActionArea>
+    </Card>
   );
 };
 

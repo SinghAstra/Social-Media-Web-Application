@@ -2,6 +2,7 @@ import React from "react";
 import Post from "./Post/Post";
 import { useSelector } from "react-redux";
 import LoadingPostSkelton from "./Post/LoadingPostSkelton";
+import { Grid } from "@mui/material";
 
 // Component responsible for rendering a list of posts
 const Posts = ({ setCurrentId }) => {
@@ -14,23 +15,28 @@ const Posts = ({ setCurrentId }) => {
   // Render loading skeletons while posts are being loaded
   if (isLoadingPosts) {
     return (
-      <div className="flex flex-col w-full items-center">
+      <Grid container spacing={1} alignItems="stretch" sx={{ padding: 2 }}>
+        {/* Render loading skeletons 8 times */}
         {Array.from({ length: 8 }).map((_, index) => (
-          <LoadingPostSkelton key={index} />
+          <Grid item key={index} xs={12} sm={6} md={4} xl={3}>
+            <LoadingPostSkelton />
+          </Grid>
         ))}
-      </div>
+      </Grid>
     );
   }
 
   // Render actual posts once loading is complete
   return (
-    <div className="flex flex-col w-full items-center">
+    <Grid container alignItems="stretch" spacing={1} sx={{ padding: 2 }}>
       {/* Map through the posts and render each post component */}
       {posts &&
         posts.map((post) => (
-          <Post post={post} setCurrentId={setCurrentId} key={post._id} />
+          <Grid item key={post._id} xs={12} sm={6} md={4} xl={3}>
+            <Post post={post} setCurrentId={setCurrentId} />
+          </Grid>
         ))}
-    </div>
+    </Grid>
   );
 };
 

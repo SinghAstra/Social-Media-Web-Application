@@ -29,6 +29,6 @@ app.get("/", (req, res) => {
   res.send("This is Home Route.");
 });
 
-app.listen(5000, () => {
-  console.log("Server is Listening on Port 5000");
+app.listen(3001, () => {
+  console.log("Server is Listening on Port 3001");
 });

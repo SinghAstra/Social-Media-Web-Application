@@ -82,7 +82,7 @@ const Navbar = () => {
   return (
     <Toolbar
       sx={{
-        margin: "8px",
+        margin: "16px",
         boxShadow: "rgba(0, 0, 0, 0.24) 0px 3px 8px",
         borderRadius: "8px",
       }}

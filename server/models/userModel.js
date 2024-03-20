@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
 });
+
 userSchema.statics.signUp = async function (email, password) {
   if (!email || !password) {
     throw new Error("Email and password are required");
@@ -34,6 +35,24 @@ userSchema.statics.signUp = async function (email, password) {
     password: hash,
   });
   return newUser;
+};
+
+userSchema.statics.logIn = async function (email, password) {
+  if (!email || !password) {
+    throw Error("Missing Credentials");
+  }
+
+  const user = await this.findOne({ email });
+  if (!user) {
+    throw Error("Incorrect email");
+  }
+
+  const isPasswordCorrect = await bcrypt.compare(password, user.password);
+  if (!isPasswordCorrect) {
+    throw Error("Incorrect password");
+  }
+
+  return user;
 };
 
 module.exports = mongoose.model("User", userSchema);

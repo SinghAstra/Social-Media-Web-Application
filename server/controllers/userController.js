@@ -17,7 +17,14 @@ const signUpController = async (req, res) => {
 };
 
 const logInController = async (req, res) => {
-  res.json({ success: "success" });
+  try {
+    const { email, password } = req.body;
+    const user = await User.logIn(email, password);
+    const token = createToken(user._id);
+    res.status(201).json({ email, token });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 module.exports = {

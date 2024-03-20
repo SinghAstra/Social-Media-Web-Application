@@ -3,13 +3,10 @@ const User = require("../models/userModel");
 const signUpController = async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      res.status(400).json({ message: "Missing Credentials" });
-    }
     const user = await User.signUp(email, password);
     res.status(201).json({ message: "User Created", user });
   } catch (error) {
-    res.status(500).json({ message: "Internal Server Error", error });
+    res.status(400).json({ error: error.message });
   }
 };
 

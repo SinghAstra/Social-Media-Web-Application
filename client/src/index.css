@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sidebar-container {
+  width: 25%;
+}
+
+.posts-container {
+  width: 75%;
+}

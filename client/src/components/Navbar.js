@@ -11,9 +11,19 @@ const Navbar = () => {
           </h1>
         </Link>
       </div>
-      <div>
-        <button>Log In</button>
-        <button>Sign Up</button>
+      <div className="flex gap-2">
+        <Link
+          to={"/log-in"}
+          className="bg-transparent hover:bg-blue-400 border border-blue-400 text-white hover:text-black font-bold py-2 px-3 rounded"
+        >
+          Log In
+        </Link>
+        <Link
+          to={"/sign-up"}
+          className="bg-transparent hover:bg-blue-400 border border-blue-400 text-white hover:text-black font-bold py-2 px-3 rounded"
+        >
+          Sign Up
+        </Link>
       </div>
     </div>
   );

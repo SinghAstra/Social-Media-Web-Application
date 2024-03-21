@@ -6,51 +6,76 @@ import {
   PersonOutline,
   SettingsOutlined,
 } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const Sidebar = () => {
   return (
     <div className="sidebar-container h-screen">
       <ul className="flex flex-col gap-1 p-1">
         <li>
-          <Link to={"/app/welcome"}>
-            <div className="flex items-center gap-2 p-2 hover:bg-blue-400 cursor-pointer">
-              <HomeOutlinedIcon style={{ fontSize: 30 }} />
-              <h2 className="text-xl ">Home</h2>
-            </div>
-          </Link>
+          <NavLink
+            to={"/app/welcome"}
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-400 flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+                : "flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+            }
+          >
+            <HomeOutlinedIcon style={{ fontSize: 30 }} />
+            <h2 className="text-xl ">Home</h2>
+          </NavLink>
         </li>
         <li>
-          <Link to={"/app/add-post"}>
-            <div className="flex items-center gap-2 p-2  hover:bg-blue-400 cursor-pointer">
-              <AddCircleOutlinedIcon style={{ fontSize: 30 }} />
-              <h2 className="text-xl ">Add Post</h2>
-            </div>
-          </Link>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-400 flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+                : "flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+            }
+            to={"/app/add-post"}
+          >
+            <AddCircleOutlinedIcon style={{ fontSize: 30 }} />
+            <h2 className="text-xl ">Add Post</h2>
+          </NavLink>
         </li>
         <li>
-          <Link to="/app/profile">
-            <div className="flex items-center gap-2 p-2  hover:bg-blue-400 cursor-pointer">
-              <PersonOutline style={{ fontSize: 30 }} />
-              <h2 className="text-xl ">Profile</h2>
-            </div>
-          </Link>
+          <NavLink
+            to="/app/profile"
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-400 flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+                : "flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+            }
+          >
+            <PersonOutline style={{ fontSize: 30 }} />
+            <h2 className="text-xl ">Profile</h2>
+          </NavLink>
         </li>
         <li>
-          <Link to="/app/friends">
-            <div className="flex items-center gap-2 p-2  hover:bg-blue-400 cursor-pointer">
-              <PeopleAltOutlined style={{ fontSize: 30 }} />
-              <h2 className="text-xl ">Friends</h2>
-            </div>
-          </Link>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-400 flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+                : "flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+            }
+            to="/app/friends"
+          >
+            <PeopleAltOutlined style={{ fontSize: 30 }} />
+            <h2 className="text-xl ">Friends</h2>
+          </NavLink>
         </li>
         <li>
-          <Link to="/app/settings">
-            <div className="flex items-center gap-2 p-2  hover:bg-blue-400 cursor-pointer">
-              <SettingsOutlined style={{ fontSize: 30 }} />
-              <h2 className="text-xl ">Settings</h2>
-            </div>
-          </Link>
+          <NavLink
+            className={({ isActive }) =>
+              isActive
+                ? "bg-blue-400 flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+                : "flex items-center gap-2 p-2 hover:bg-blue-300 cursor-pointer"
+            }
+            to="/app/settings"
+          >
+            <SettingsOutlined style={{ fontSize: 30 }} />
+            <h2 className="text-xl ">Settings</h2>
+          </NavLink>
         </li>
       </ul>
     </div>

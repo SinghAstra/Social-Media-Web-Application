@@ -27,10 +27,6 @@ function App() {
         <Route path="/auth/sign-up" element={<SignUp />} />
       </Routes>
       <Footer />
-      {/* <img
-        src={`${process.env.PUBLIC_URL}/assets/images/logIn.svg`}
-        alt="logIn"
-      /> */}
     </div>
   );
 }

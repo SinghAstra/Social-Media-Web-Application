@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import { VisibilityOutlined, VisibilityOffOutlined } from "@mui/icons-material";
+import {
+  VisibilityOutlined,
+  VisibilityOffOutlined,
+  EmailOutlined,
+} from "@mui/icons-material";
+import { Link } from "react-router-dom";
 
 const LogIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -9,25 +13,22 @@ const LogIn = () => {
     setShowPassword(!showPassword);
   };
   return (
-    <div className="flex h-screen font-mono">
-      <div className="flex-1 flex items-center justify-center">
-        <div className="image-container w-2/3 h-2/3">
+    <div className="flex h-screen font-mono items-center justify-center ">
+      <div className="flex justify-center items-center w-1/2 h-4/5 flex-col p-4 gap-2">
+        <div className="image-container w-4/5">
           <img
             src={`${process.env.PUBLIC_URL}/assets/images/logIn.svg`}
             alt="log-in"
           />
         </div>
-      </div>
-      <div className="flex-1 justify-center items-center flex flex-col gap-4">
-        <h1 className="text-2xl text-blue-400">Log In</h1>
-        <form className="flex flex-col gap-4 w-1/2 h-2/3">
+        <form className="flex flex-col gap-4 w-2/3 items-center">
           <div className="relative w-full">
             <div
               className="absolute top-0 bottom-0 left-0 pl-3  
                     flex items-center  
                     pointer-events-none"
             >
-              <EmailOutlinedIcon />
+              <EmailOutlined />
             </div>
             <input
               type="email"
@@ -58,6 +59,11 @@ const LogIn = () => {
             Log In
           </button>
         </form>
+        <Link to={"/auth/sign-up"} className=" flex justify-end w-2/3">
+          <p className="hover:underline hover:to-blue-400 text-white cursor-pointer">
+            New User ? Sign Up
+          </p>
+        </Link>
       </div>
     </div>
   );

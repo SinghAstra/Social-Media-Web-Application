@@ -14,7 +14,7 @@ function App() {
     <div className="bg-black text-white font-mono">
       <Navbar />
       <Routes>
-        <Route path="/" element={<Navigate to="/auth/sign-up" />} />
+        <Route path="/" element={<Navigate to="/app/welcome" />} />
         <Route path="app" element={<Home />}>
           <Route path="/app/welcome" element={<Welcome />} />
           <Route path="/app/add-post" element={<AddPost />} />

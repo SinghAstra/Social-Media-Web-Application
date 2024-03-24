@@ -3,6 +3,11 @@ const bcrypt = require("bcrypt");
 const validator = require("validator");
 
 const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    unique: true,
+    required: true,
+  },
   email: {
     type: String,
     unique: true,
@@ -14,9 +19,9 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-userSchema.statics.signUp = async function (email, password) {
-  if (!email || !password) {
-    throw new Error("Email and password are required");
+userSchema.statics.signUp = async function (username, email, password) {
+  if (!username || !email || !password) {
+    throw new Error("Missing Credentials");
   }
   if (!validator.isEmail(email)) {
     throw new Error("Invalid email");
@@ -31,6 +36,7 @@ userSchema.statics.signUp = async function (email, password) {
   const salt = await bcrypt.genSalt(10);
   const hash = await bcrypt.hash(password, salt);
   const newUser = await this.create({
+    username: username,
     email: email,
     password: hash,
   });

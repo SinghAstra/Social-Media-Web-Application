@@ -7,12 +7,13 @@ const createToken = (_id) => {
 
 const signUpController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.signUp(email, password);
+    const { username, email, password } = req.body;
+    const user = await User.signUp(username, email, password);
     const token = createToken(user._id);
-    res.status(201).json({ message: "User Created", token });
+    const userInfo = { ...user._doc, token };
+    res.status(201).json(userInfo);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ message: error.message });
   }
 };
 
@@ -21,9 +22,22 @@ const logInController = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.logIn(email, password);
     const token = createToken(user._id);
-    res.status(201).json({ email, token });
+    const userInfo = { ...user._doc, token };
+    res.status(200).json(userInfo);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ message: error.message });
+  }
+};
+
+const handleVerifyEmail = async () => {
+  try {
+    const response = await axios.post('/api/send-verification-email', {
+      email,
+    });
+
+    console.log('Email sent successfully!', response.data);
+  } catch (error) {
+    console.error('Failed to send email:', error);
   }
 };
 

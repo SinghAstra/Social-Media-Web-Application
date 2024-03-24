@@ -8,8 +8,12 @@ import {
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { signUpAction } from "../actions/authActions";
 
 const SignUp = () => {
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -21,7 +25,11 @@ const SignUp = () => {
     email: Yup.string().email().required("Required"),
     password: Yup.string()
       .required("No password provided.")
-      .min(8, "Password is too short - should be 8 chars minimum."),
+      .min(8, "Password is too short - should be 8 chars minimum.")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+        "Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character."
+      ),
   });
 
   const initialFormData = {
@@ -31,7 +39,7 @@ const SignUp = () => {
   };
 
   const handleFormSubmit = (values, { resetForm }) => {
-    console.log("values is ", values);
+    dispatch(signUpAction(values));
     resetForm();
   };
 

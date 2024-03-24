@@ -7,8 +7,12 @@ import {
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { useDispatch } from "react-redux";
+import { logInAction } from "../actions/authActions";
 
 const LogIn = () => {
+  const dispatch = useDispatch();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -28,7 +32,7 @@ const LogIn = () => {
   });
 
   const handleFormSubmit = (values, { resetForm }) => {
-    console.log("values is ", values);
+    dispatch(logInAction(values));
     resetForm();
   };
 
